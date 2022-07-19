@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LinkedListTest {
-    LinkedList list;
+    LinkedList<String> list;
 
     @BeforeEach
     public void setup() {

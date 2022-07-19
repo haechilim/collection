@@ -3,13 +3,13 @@ package kr.hs.sunrint.list;
 import kr.hs.sunrint.exception.IndexOutOfBoundException;
 import kr.hs.sunrint.exception.NotExistElementException;
 
-public class LinkedList {
-    private Node head;
-    private Node tail;
+public class LinkedList<E> {
+    private Node<E> head;
+    private Node<E> tail;
     private int size = 0;
 
-    public boolean add(String element) {
-        Node node = new Node(element);
+    public boolean add(E element) {
+        Node<E> node = new Node(element);
 
         if(tail == null) head = node;
         else tail.next = node;
@@ -20,12 +20,12 @@ public class LinkedList {
         return true;
     }
 
-    public boolean add(int index, String element) throws IndexOutOfBoundException {
+    public boolean add(int index, E element) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node preNode = index - 1 < 0 ? null : search(index - 1);
-        Node nextNode = search(index);
-        Node node = new Node(element, nextNode);
+        Node<E> preNode = index - 1 < 0 ? null : search(index - 1);
+        Node<E> nextNode = search(index);
+        Node<E> node = new Node(element, nextNode);
 
         if(preNode != null) preNode.next = node;
         else head = node;
@@ -35,7 +35,7 @@ public class LinkedList {
         return true;
     }
 
-    public boolean addFirst(String element) {
+    public boolean addFirst(E element) {
         try {
             add(0, element);
         } catch (IndexOutOfBoundException e) {
@@ -46,20 +46,20 @@ public class LinkedList {
         return true;
     }
 
-    public String removeFirst() {
+    public E removeFirst() {
         return remove(0);
     }
 
-    public String removeLast() {
+    public E removeLast() {
         return remove(size - 1);
     }
 
-    public String remove(int index) throws IndexOutOfBoundException {
+    public E remove(int index) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node preNode = index - 1 < 0 ? null : search(index - 1);
-        Node nextNode = index + 1 >= size ? null : search(index + 1);
-        Node node = search(index);
+        Node<E> preNode = index - 1 < 0 ? null : search(index - 1);
+        Node<E> nextNode = index + 1 >= size ? null : search(index + 1);
+        Node<E> node = search(index);
 
         if(preNode == null) head = nextNode;
         else if(nextNode == null) preNode.next =  tail;
@@ -70,7 +70,7 @@ public class LinkedList {
         return node.data;
     }
 
-    public boolean remove(String element) {
+    public boolean remove(E element) {
         try {
             int index = getIndexByElement(element);
             remove(index);
@@ -82,18 +82,18 @@ public class LinkedList {
         return true;
     }
 
-    public String set(int index, String element) throws IndexOutOfBoundException {
+    public E set(int index, E element) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node node = search(index);
+        Node<E> node = search(index);
 
         node.data = element;
 
         return node.data;
     }
 
-    public String get(int index) {
-        Node node = search(index);
+    public E get(int index) {
+        Node<E> node = search(index);
 
         return node.data;
     }
@@ -108,7 +108,7 @@ public class LinkedList {
         return size;
     }
 
-    public boolean contains(String element) {
+    public boolean contains(E element) {
         try {
             getIndexByElement(element);
         } catch (NotExistElementException e) {
@@ -118,7 +118,7 @@ public class LinkedList {
         return true;
     }
 
-    public int indexOf(String element) throws NotExistElementException {
+    public int indexOf(E element) throws NotExistElementException {
         try {
             return getIndexByElement(element);
         } catch (NotExistElementException e) {
@@ -126,8 +126,8 @@ public class LinkedList {
         }
     }
 
-    private int getIndexByElement(String element) throws NotExistElementException {
-        Node current = head;
+    private int getIndexByElement(E element) throws NotExistElementException {
+        Node<E> current = head;
 
         for(int i = 0; i < size; i++) {
             if(current.data == element) return i;
@@ -141,7 +141,7 @@ public class LinkedList {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
         if(head == null) return null;
 
-        Node current = head;
+        Node<E> current = head;
 
         for(int i = 0; i < index; i++) {
             current = current.next;
@@ -150,15 +150,15 @@ public class LinkedList {
         return current;
     }
 
-    private class Node {
-        private String data;
+    private class Node<E> {
+        private E data;
         private Node next;
 
-        public Node(String data) {
+        public Node(E data) {
             this.data = data;
         }
 
-        public Node(String data, Node next) {
+        public Node(E data, Node next) {
             this.data = data;
             this.next = next;
         }
