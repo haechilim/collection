@@ -1,129 +1,140 @@
 package kr.hs.sunrint.list;
 
+import kr.hs.sunrint.exception.IndexOutOfBoundException;
+
 import java.util.Arrays;
 
-public class ArrayList {
-    private String[] arrayList = new String[1];
-    private int size = 0;
+public class ArrayList<E> {
+    private Object[] data;
+    private int current = 0;
+    private int initialSize = 1024;
 
-    public boolean add(String element) {
-        if(isExtend()) extend();
+    public ArrayList() {
+        init();
+    }
 
-        arrayList[size++] = element;
+    public ArrayList(int initialSize) {
+        this.initialSize = initialSize;
+
+        init();
+    }
+
+    private void init() {
+        data = new Object[initialSize];
+    }
+
+    public boolean add(E element) {
+        if(needsExtend()) extend();
+
+        data[current++] = element;
 
         return true;
     }
 
-    public boolean add(int index, String element) throws IndexOutOfBoundsException {
-        if(index >= size) throw new IndexOutOfBoundsException();
+    public boolean add(int index, E element) throws IndexOutOfBoundException {
+        if(index >= current) throw new IndexOutOfBoundException();
 
-        String[] temp = new String[size];
+        Object[] temp = new Object[current];
 
         for(int i = 0; i < temp.length; i++) {
-            temp[i] = arrayList[i];
+            temp[i] = data[i];
         }
 
-        arrayList[index] = element;
+        data[index] = element;
 
-        for(int i = index; i < size; i++) {
-            if(arrayList.length <= i + 1) extend();
-            arrayList[i + 1] = temp[i];
+        for(int i = index; i < current; i++) {
+            if(data.length <= i + 1) extend();
+            data[i + 1] = temp[i];
         }
 
-        size++;
+        current++;
 
         return true;
     }
 
     public boolean remove(int index) throws IndexOutOfBoundsException {
-        if(index >= size) throw new IndexOutOfBoundsException();
+        if(index >= current) throw new IndexOutOfBoundsException();
 
-        for(int i = index; i < size; i++ ) {
-            arrayList[i] = i + 1 < size ? arrayList[i + 1] : null;
+        for(int i = index; i < current; i++ ) {
+            data[i] = i + 1 < current ? data[i + 1] : null;
         }
 
-        size--;
+        current--;
 
         return true;
     }
 
-    public boolean remove(String element) {
-        for(int i = 0; i < size; i++) {
-            if(arrayList[i] == element) return remove(i);
+    public boolean remove(E element) {
+        for(int i = 0; i < current; i++) {
+            if(data[i] == element) return remove(i);
         }
 
         return false;
     }
 
-    public String set(int index, String element) throws IndexOutOfBoundsException {
-        if(index >= size) throw new IndexOutOfBoundsException();
+    public E set(int index, E element) throws IndexOutOfBoundsException {
+        if(index >= current) throw new IndexOutOfBoundsException();
 
-        arrayList[index] = element;
+        data[index] = element;
 
         return element;
     }
 
-    public String get(int index) throws IndexOutOfBoundsException {
-        if(index >= size) throw new IndexOutOfBoundsException();
+    public Object get(int index) throws IndexOutOfBoundsException {
+        if(index >= current) throw new IndexOutOfBoundsException();
 
-        return arrayList[index];
+        return data[index];
     }
 
     public void clear() {
-        arrayList = new String[0];
-        size = 0;
+        data = new String[0];
+        current = 0;
     }
 
     public int size() {
-        return size;
+        return current;
     }
 
-    public boolean contains(String element) {
-        for(int i = 0; i < size; i++) {
-            if(arrayList[i] == element) return true;
+    public boolean contains(E element) {
+        for(int i = 0; i < current; i++) {
+            if(data[i] == element) return true;
         }
 
         return false;
     }
 
-    public int indexOf(String element) {
-        for(int i = 0; i < size; i++) {
-            if(arrayList[i] == element) return i;
+    public int indexOf(E element) {
+        for(int i = 0; i < current; i++) {
+            if(data[i] == element) return i;
         }
 
         return -1;
     }
 
-    private boolean isExtend() {
-        return size == arrayList.length;
+    private boolean needsExtend() {
+        return current == data.length;
     }
 
     private void extend() {
-        String[] temp = arrayList;
-        arrayList = new String[size * 2];
+        Object[] temp = data;
+        data = new String[current * 2];
 
         copyData(temp);
     }
 
-    private void copyData(String[] array) {
-        if(arrayList.length < array.length) return;
+    private void copyData(Object[] array) {
+        if(data.length < array.length) return;
 
         for(int i = 0; i < array.length; i++) {
-            arrayList[i] = array[i];
-        }
-    }
-
-    public class IndexOutOfBoundsException extends RuntimeException {
-        public IndexOutOfBoundsException() {
-
+            data[i] = array[i];
         }
     }
 
     @Override
     public String toString() {
         return "ArrayList{" +
-                "arrayList=" + Arrays.toString(arrayList) +
-                ", size=" + size +
+                "data=" + Arrays.toString(data) +
+                ", current=" + current +
                 '}';
     }
 }

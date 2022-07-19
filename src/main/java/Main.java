@@ -1,52 +1,52 @@
-import kr.hs.sunrint.list.ArrayList;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList arrayList = new ArrayList();
+        ArrayList<Integer> arrayList = new ArrayList<>();
 
-        arrayList.add("a");
+        arrayList.add(1);
         System.out.println(arrayList.toString());
 
-        arrayList.add("b");
+        arrayList.add(2);
         System.out.println(arrayList.toString());
 
-        arrayList.add("c");
+        arrayList.add(3);
         System.out.println(arrayList.toString());
 
-        arrayList.add("d");
+        arrayList.add(4);
         System.out.println(arrayList.toString());
 
-        arrayList.add(2, "e");
+        arrayList.add(2, 5);
         System.out.println(arrayList.toString());
 
-        arrayList.add("f");
+        arrayList.add(6);
         System.out.println(arrayList.toString());
 
-        arrayList.add(2, "1");
+        arrayList.add(2, 11);
         System.out.println(arrayList.toString());
 
-        arrayList.add(2, "4");
+        arrayList.add(2, 14);
         System.out.println(arrayList.toString());
 
-        arrayList.add(2, "41");
+        arrayList.add(2, 55);
         System.out.println(arrayList.toString());
 
         arrayList.remove(2);
         System.out.println(arrayList.toString());
 
-        arrayList.add("e");
+        arrayList.add(5);
         System.out.println(arrayList.toString());
 
-        arrayList.remove("e");
+        arrayList.remove(5);
         System.out.println(arrayList.toString());
 
-        arrayList.add("e");
+        arrayList.add(5);
         System.out.println(arrayList.toString());
 
-        arrayList.set(4, "asddf");
+        arrayList.set(4, 2);
         System.out.println(arrayList.toString());
 
-        arrayList.set(0, "pqpqpqp");
+        arrayList.set(0, 2);
         System.out.println(arrayList.toString());
 
         System.out.println(arrayList.get(0));
@@ -55,13 +55,13 @@ public class Main {
 
         System.out.println(arrayList.size());
 
-        System.out.println(arrayList.contains("asddf"));
+        System.out.println(arrayList.contains(2));
 
-        System.out.println(arrayList.contains("asddf1"));
+        System.out.println(arrayList.contains(7));
 
-        System.out.println(arrayList.indexOf("asddf"));
+        System.out.println(arrayList.indexOf(4));
 
-        System.out.println(arrayList.indexOf("asddf1"));
+        System.out.println(arrayList.indexOf(2));
 
         arrayList.clear();
 
