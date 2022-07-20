@@ -1,70 +1,31 @@
-import java.util.ArrayList;
+import kr.hs.sunrint.tree.BinaryTree;
+import kr.hs.sunrint.tree.Node;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
+        Node<String> root = new Node<>("A");
+        Node<String> nodeB = new Node<>("B");
+        Node<String> nodeC = new Node<>("C");
+        Node<String> nodeD = new Node<>("D");
+        Node<String> nodeE = new Node<>("E");
+        Node<String> nodeF = new Node<>("F");
+        Node<String> nodeG = new Node<>("G");
 
-        arrayList.add(1);
-        System.out.println(arrayList.toString());
+        BinaryTree<String> binaryTree = new BinaryTree<>(root);
 
-        arrayList.add(2);
-        System.out.println(arrayList.toString());
+        binaryTree.insertLeftNode(root, nodeB);
+        binaryTree.insertRightNode(root, nodeC);
+        binaryTree.insertLeftNode(nodeB, nodeD);
+        binaryTree.insertRightNode(nodeB, nodeE);
+        binaryTree.insertLeftNode(nodeE, nodeF);
+        binaryTree.insertRightNode(nodeE, nodeG);
 
-        arrayList.add(3);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(4);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(2, 5);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(6);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(2, 11);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(2, 14);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(2, 55);
-        System.out.println(arrayList.toString());
-
-        arrayList.remove(2);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(5);
-        System.out.println(arrayList.toString());
-
-        arrayList.remove(5);
-        System.out.println(arrayList.toString());
-
-        arrayList.add(5);
-        System.out.println(arrayList.toString());
-
-        arrayList.set(4, 2);
-        System.out.println(arrayList.toString());
-
-        arrayList.set(0, 2);
-        System.out.println(arrayList.toString());
-
-        System.out.println(arrayList.get(0));
-
-        System.out.println(arrayList.get(8));
-
-        System.out.println(arrayList.size());
-
-        System.out.println(arrayList.contains(2));
-
-        System.out.println(arrayList.contains(7));
-
-        System.out.println(arrayList.indexOf(4));
-
-        System.out.println(arrayList.indexOf(2));
-
-        arrayList.clear();
-
-        System.out.println(arrayList.size());
+        binaryTree.traversePreorder();
+        System.out.println();
+        binaryTree.traverseInorder();
+        System.out.println();
+        binaryTree.traversePostorder();
+        System.out.println();
+        binaryTree.traverseLevel();
     }
 }

@@ -40,7 +40,8 @@ public class LinkedList<E> {
 
     public boolean addFirst(E element) {
         try {
-            add(0, element);
+            if(size == 0) add(element);
+            else add(0, element);
         } catch (IndexOutOfBoundException e) {
             e.printStackTrace();
             return false;
