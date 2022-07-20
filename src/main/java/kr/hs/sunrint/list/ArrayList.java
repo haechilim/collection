@@ -80,10 +80,10 @@ public class ArrayList<E> {
         return element;
     }
 
-    public Object get(int index) throws IndexOutOfBoundsException {
+    public E get(int index) throws IndexOutOfBoundsException {
         if(index >= current) throw new IndexOutOfBoundsException();
 
-        return data[index];
+        return (E)data[index];
     }
 
     public void clear() {
@@ -109,6 +109,10 @@ public class ArrayList<E> {
         }
 
         return -1;
+    }
+
+    public boolean isEmpty() {
+        return size() <= 0;
     }
 
     private boolean needsExtend() {

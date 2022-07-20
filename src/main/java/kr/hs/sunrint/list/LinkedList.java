@@ -11,7 +11,7 @@ public class LinkedList<E> {
     public boolean add(E element) {
         Node<E> node = new Node(element);
 
-        if(tail == null) head = node;
+        if(isEmpty()) head = node;
         else tail.next = node;
 
         tail = node;
@@ -23,12 +23,15 @@ public class LinkedList<E> {
     public boolean add(int index, E element) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node<E> preNode = index - 1 < 0 ? null : search(index - 1);
-        Node<E> nextNode = search(index);
-        Node<E> node = new Node(element, nextNode);
+        Node<E> node = new Node(element, search(index));
 
-        if(preNode != null) preNode.next = node;
-        else head = node;
+        try {
+            Node<E> preNode = search(index - 1);
+            preNode.next = node;
+        }
+        catch (IndexOutOfBoundException e) {
+            head = node;
+        }
 
         size++;
 
@@ -108,6 +111,10 @@ public class LinkedList<E> {
         return size;
     }
 
+    public boolean isEmpty() {
+        return size <= 0;
+    }
+
     public boolean contains(E element) {
         try {
             getIndexByElement(element);
@@ -139,7 +146,6 @@ public class LinkedList<E> {
 
     private Node search(int index) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
-        if(head == null) return null;
 
         Node<E> current = head;
 
