@@ -1,6 +1,5 @@
 package kr.hs.sunrint.list;
 
-import kr.hs.sunrint.exception.IndexOutOfBoundException;
 import kr.hs.sunrint.exception.NotExistElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

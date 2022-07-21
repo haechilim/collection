@@ -26,13 +26,13 @@ public class Main {
 //        binaryTree.insertRightNode(nodeC, nodeI);
 //        binaryTree.insertLeftNode(nodeI, nodeJ);
 
-        binaryTree.traversePreorderRecursively();
+        binaryTree.traversePreorder();
         System.out.println(binaryTree.getTraversalNodes());
 
-        binaryTree.traverseInorderRecursively();
+        binaryTree.traverseInorder();
         System.out.println(binaryTree.getTraversalNodes());
 
-        binaryTree.traversePostorderRecursively();
+        binaryTree.traversePostorder();
         System.out.println(binaryTree.getTraversalNodes());
 
         binaryTree.traverseLevel();
