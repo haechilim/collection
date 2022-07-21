@@ -10,6 +10,9 @@ public class Main {
         Node<String> nodeE = new Node<>("E");
         Node<String> nodeF = new Node<>("F");
         Node<String> nodeG = new Node<>("G");
+        Node<String> nodeH = new Node<>("H");
+        Node<String> nodeI = new Node<>("I");
+        Node<String> nodeJ = new Node<>("J");
 
         BinaryTree<String> binaryTree = new BinaryTree<>(root);
 
@@ -19,13 +22,20 @@ public class Main {
         binaryTree.insertRightNode(nodeB, nodeE);
         binaryTree.insertLeftNode(nodeE, nodeF);
         binaryTree.insertRightNode(nodeE, nodeG);
+//        binaryTree.insertLeftNode(nodeC, nodeH);
+//        binaryTree.insertRightNode(nodeC, nodeI);
+//        binaryTree.insertLeftNode(nodeI, nodeJ);
 
-        binaryTree.traversePreorder();
-        System.out.println();
-        binaryTree.traverseInorder();
-        System.out.println();
-        binaryTree.traversePostorder();
-        System.out.println();
+        binaryTree.traversePreorderRecursively();
+        System.out.println(binaryTree.getTraversalNodes());
+
+        binaryTree.traverseInorderRecursively();
+        System.out.println(binaryTree.getTraversalNodes());
+
+        binaryTree.traversePostorderRecursively();
+        System.out.println(binaryTree.getTraversalNodes());
+
         binaryTree.traverseLevel();
+        System.out.println(binaryTree.getTraversalNodes());
     }
 }

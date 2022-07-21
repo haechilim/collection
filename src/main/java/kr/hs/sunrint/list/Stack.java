@@ -1,5 +1,6 @@
 package kr.hs.sunrint.list;
 
+import kr.hs.sunrint.exception.IndexOutOfBoundException;
 import kr.hs.sunrint.exception.NotExistElementException;
 
 public class Stack<E> {
@@ -10,15 +11,16 @@ public class Stack<E> {
     }
 
     public E pop() throws NotExistElementException {
-        int size = arrayList.size();
-
-        if(size < 0) throw new NotExistElementException();
-
-        E element = arrayList.get(size - 1);
-
-        arrayList.remove(element);
-
-        return element;
+        try {
+            int index = arrayList.size() - 1;
+            E element = arrayList.get(index);
+            arrayList.remove(index);
+            return element;
+        } catch (IndexOutOfBoundException e) {
+            throw new NotExistElementException();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new NotExistElementException();
+        }
     }
 
     public boolean isEmpty() {

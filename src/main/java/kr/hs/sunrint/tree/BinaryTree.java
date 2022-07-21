@@ -1,11 +1,11 @@
 package kr.hs.sunrint.tree;
 
 import kr.hs.sunrint.list.Queue;
-import kr.hs.sunrint.list.Stack;
 
 public class BinaryTree<T> {
     private Node<T> rootNode;
     private Queue<Node> queue;
+    private StringBuffer buffer;
 
     public BinaryTree(Node<T> rootNode) {
         this.rootNode = rootNode;
@@ -33,56 +33,65 @@ public class BinaryTree<T> {
         return rootNode;
     }
 
-    public void traversePreorder() {
-        preorder(rootNode);
+    public void traversePreorderRecursively() {
+        buffer = new StringBuffer();
+        preorderRecursively(rootNode);
     }
 
-    public void traverseInorder() {
-        inorder(rootNode);
+    public void traverseInorderRecursively() {
+        buffer = new StringBuffer();
+        inorderRecursively(rootNode);
     }
 
-    public void traversePostorder() {
-        postorder(rootNode);
+    public void traversePostorderRecursively() {
+        buffer = new StringBuffer();
+        postorderRecursively(rootNode);
     }
 
     public void traverseLevel() {
-        queue = new Queue<>();
+        buffer = new StringBuffer();
 
+        queue = new Queue<>();
         queue.enqueue(rootNode);
+
         level();
     }
 
-    private void preorder(Node<T> node) {
+    public String getTraversalNodes() {
+        return buffer.toString();
+    }
+
+    private void preorderRecursively(Node<T> node) {
         if(node == null) return;
 
         visit(node);
-        preorder(node.getLeft());
-        preorder(node.getRight());
+        preorderRecursively(node.getLeft());
+        preorderRecursively(node.getRight());
     }
 
-    private void inorder(Node<T> node) {
+    private void inorderRecursively(Node<T> node) {
         if(node == null) return;
 
-        inorder(node.getLeft());
+        inorderRecursively(node.getLeft());
         visit(node);
-        inorder(node.getRight());
+        inorderRecursively(node.getRight());
     }
 
-    private void postorder(Node<T> node) {
+    private void postorderRecursively(Node<T> node) {
         if(node == null) return;
 
-        postorder(node.getLeft());
-        postorder(node.getRight());
+        postorderRecursively(node.getLeft());
+        postorderRecursively(node.getRight());
         visit(node);
     }
 
      private void level() {
-        Node<T> pop = queue.dequeue();
+        Node<T> node = queue.dequeue();
 
-        visit(pop);
+        visit(node);
 
-        Node<T> leftNode = pop.getLeft();
-        Node<T> rightNode = pop.getRight();
+        Node<T> leftNode = node.getLeft();
+        Node<T> rightNode = node.getRight();
 
         if(leftNode != null) {
             queue.enqueue(leftNode);
@@ -97,6 +106,7 @@ public class BinaryTree<T> {
     }
 
     private void visit(Node<T> node) {
-        System.out.print(node.getData() + "\t");
+        buffer.append(node.getData() + "\t");
+        //System.out.print(node.getData() + "\t");
     }
 }
