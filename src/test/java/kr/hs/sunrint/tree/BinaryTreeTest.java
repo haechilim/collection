@@ -35,24 +35,33 @@ public class BinaryTreeTest {
     }
 
     @Test
+    public void 삽입된_노드의_부모_노드_확인() {
+        Node<String> rootNode = binaryTree.getRootNode();
+        Node<String> node = rootNode.getLeft();
+
+        assertEquals(rootNode.getParent(), null);
+        assertEquals(node.getParent(), rootNode);
+    }
+
+    @Test
     public void traverse_재귀() {
         binaryTree.traversePreorderRecursively();
-        assertEquals("ABDEFGC", binaryTree.getTraversalNodes());
+        assertEquals("A B D E F G C", binaryTree.getTraversalNodes());
         binaryTree.traverseInorderRecursively();
-        assertEquals("DBFEGAC", binaryTree.getTraversalNodes());
+        assertEquals("D B F E G A C", binaryTree.getTraversalNodes());
         binaryTree.traversePostorderRecursively();
-        assertEquals("DFGEBCA", binaryTree.getTraversalNodes());
+        assertEquals("D F G E B C A", binaryTree.getTraversalNodes());
     }
 
     @Test
     public void traverse() {
         binaryTree.traversePreorder();
-        assertEquals("ABDEFGC", binaryTree.getTraversalNodes());
+        assertEquals("A B D E F G C", binaryTree.getTraversalNodes());
         binaryTree.traverseInorder();
-        assertEquals("DBFEGAC", binaryTree.getTraversalNodes());
+        assertEquals("D B F E G A C", binaryTree.getTraversalNodes());
         binaryTree.traversePostorder();
-        assertEquals("DFGEBCA", binaryTree.getTraversalNodes());
+        assertEquals("D F G E B C A", binaryTree.getTraversalNodes());
         binaryTree.traverseLevel();
-        assertEquals("ABCDEFG", binaryTree.getTraversalNodes());
+        assertEquals("A B C D E F G", binaryTree.getTraversalNodes());
     }
 }

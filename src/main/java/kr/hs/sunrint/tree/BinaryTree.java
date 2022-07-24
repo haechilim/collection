@@ -5,7 +5,7 @@ import kr.hs.sunrint.list.Queue;
 import kr.hs.sunrint.list.Stack;
 
 public class BinaryTree<T> {
-    private Node<T> rootNode;
+    protected Node<T> rootNode;
     private StringBuffer buffer;
 
     public BinaryTree(Node<T> rootNode) {
@@ -13,11 +13,13 @@ public class BinaryTree<T> {
     }
 
     public boolean insertLeftNode(Node parent, Node node) {
+        node.setParent(parent);
         parent.setLeft(node);
         return true;
     }
 
     public boolean insertRightNode(Node parent, Node node) {
+        node.setParent(parent);
         parent.setRight(node);
         return true;
     }
@@ -64,26 +66,45 @@ public class BinaryTree<T> {
 
     public void traverseInorder() {
         buffer = new StringBuffer();
-        ArrayList<Node<T>> visitedList = new ArrayList<>();
+        ArrayList<Node<T>> visitedNodes = new ArrayList<>();
         Stack<Node<T>> stack = new Stack<>();
 
-        stack.push(rootNode);
+        //stack.push(rootNode);
+        Node<T> node = rootNode;
 
-        while (!stack.isEmpty()) {
+        while(true) {
+            for(Node<T> left = node; left != null; left = left.getLeft()) {
+                if(visitedNodes.contains(left)) break;
+                stack.push(left);
+            }
+
+            node = stack.pop();
+
+            visit(node);
+            visitedNodes.add(node);
+
+            Node<T> rightNode = node.getRight();
+            if(rightNode != null) node = rightNode;
+
+            if(stack.isEmpty() && rightNode == null) break;
+
+
+            /*
             Node<T> node = stack.pop();
             stack.push(node);
 
             Node<T> nodeLeft = node.getLeft();
 
-            if(nodeLeft != null && !visitedList.contains(nodeLeft)) stack.push(nodeLeft);
+            if(nodeLeft != null && !visitedNodes.contains(nodeLeft)) stack.push(nodeLeft);
             else {
                 Node<T> visitNode = stack.pop();
                 Node<T> nodeRight = visitNode.getRight();
 
                 visit(visitNode);
-                visitedList.add(visitNode);
+                visitedNodes.add(visitNode);
                 if(nodeRight != null) stack.push(nodeRight);
             }
+             */
         }
     }
 
@@ -94,7 +115,7 @@ public class BinaryTree<T> {
 
     public void traversePostorder() {
         buffer = new StringBuffer();
-        ArrayList<Node<T>> visitedList = new ArrayList<>();
+        ArrayList<Node<T>> visitedNodes = new ArrayList<>();
         Stack<Node<T>> stack = new Stack<>();
 
         stack.push(rootNode);
@@ -106,11 +127,11 @@ public class BinaryTree<T> {
             Node<T> nodeLeft = node.getLeft();
             Node<T> nodeRight = node.getRight();
 
-            if(nodeLeft != null && !visitedList.contains(nodeLeft)) stack.push(nodeLeft);
-            else if(nodeRight != null && !visitedList.contains(nodeRight)) stack.push(nodeRight);
+            if(nodeLeft != null && !visitedNodes.contains(nodeLeft)) stack.push(nodeLeft);
+            else if(nodeRight != null && !visitedNodes.contains(nodeRight)) stack.push(nodeRight);
             else {
                 Node<T> visitNode = stack.pop();
-                visitedList.add(visitNode);
+                visitedNodes.add(visitNode);
                 visit(visitNode);
             }
         }
@@ -118,7 +139,7 @@ public class BinaryTree<T> {
 
     public void traverseLevel() {
         buffer = new StringBuffer();
-        Queue<Node> queue = new Queue<>();
+        Queue<Node<T>> queue = new Queue<>();
         queue.enqueue(rootNode);
 
         while (!queue.isEmpty()) {
@@ -162,6 +183,7 @@ public class BinaryTree<T> {
     }
 
     private void visit(Node<T> node) {
+        if(buffer.length() > 0) buffer.append(" ");
         buffer.append(node.getData());
     }
 }
