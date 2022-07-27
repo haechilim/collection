@@ -115,20 +115,24 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         return super.getRootNode();
     }
 
-    public void traverseInorder() {
-        super.traverseInorder();
+    @Override
+    public void traversePreorder(VisitCallback callback) {
+        super.traversePreorder(callback);
     }
 
-    public void traversePreorder() {
-        super.traversePreorder();
+    @Override
+    public void traverseInorder(VisitCallback callback) {
+        super.traverseInorder(callback);
     }
 
-    public void traversePostorder() {
-        super.traversePostorder();
+    @Override
+    public void traversePostorder(VisitCallback callback) {
+        super.traversePostorder(callback);
     }
 
-    public void traverseLevel() {
-        super.traverseLevel();
+    @Override
+    public void traverseLevel(VisitCallback callback) {
+        super.traverseLevel(callback);
     }
 
     private void remove(int key) {

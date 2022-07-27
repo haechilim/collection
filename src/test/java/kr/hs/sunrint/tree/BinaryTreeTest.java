@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BinaryTreeTest {
     private BinaryTree<String> binaryTree;
+    private StringBuffer buffer;
 
     @BeforeEach
     public void setup() {
@@ -17,9 +18,6 @@ public class BinaryTreeTest {
         Node<String> nodeE = new Node<>("E");
         Node<String> nodeF = new Node<>("F");
         Node<String> nodeG = new Node<>("G");
-//        Node<String> nodeH = new Node<>("H");
-//        Node<String> nodeI = new Node<>("I");
-//        Node<String> nodeJ = new Node<>("J");
 
         binaryTree = new BinaryTree<>(root);
 
@@ -29,9 +27,6 @@ public class BinaryTreeTest {
         binaryTree.insertRightNode(nodeB, nodeE);
         binaryTree.insertLeftNode(nodeE, nodeF);
         binaryTree.insertRightNode(nodeE, nodeG);
-//        binaryTree.insertLeftNode(nodeC, nodeH);
-//        binaryTree.insertRightNode(nodeC, nodeI);
-//        binaryTree.insertLeftNode(nodeI, nodeJ);
     }
 
     @Test
@@ -45,23 +40,40 @@ public class BinaryTreeTest {
 
     @Test
     public void traverse_재귀() {
-        binaryTree.traversePreorderRecursively();
-        assertEquals("A B D E F G C", binaryTree.getTraversalNodes());
-        binaryTree.traverseInorderRecursively();
-        assertEquals("D B F E G A C", binaryTree.getTraversalNodes());
-        binaryTree.traversePostorderRecursively();
-        assertEquals("D F G E B C A", binaryTree.getTraversalNodes());
+        buffer = new StringBuffer();
+        binaryTree.traversePreorderRecursively(visit -> addText(visit));
+        assertEquals("A B D E F G C", buffer.toString());
+
+        buffer = new StringBuffer();
+        binaryTree.traverseInorderRecursively(visit -> addText(visit));
+        assertEquals("D B F E G A C", buffer.toString());
+
+        buffer = new StringBuffer();
+        binaryTree.traversePostorderRecursively(visit -> addText(visit));
+        assertEquals("D F G E B C A", buffer.toString());
     }
 
     @Test
     public void traverse() {
-        binaryTree.traversePreorder();
-        assertEquals("A B D E F G C", binaryTree.getTraversalNodes());
-        binaryTree.traverseInorder();
-        assertEquals("D B F E G A C", binaryTree.getTraversalNodes());
-        binaryTree.traversePostorder();
-        assertEquals("D F G E B C A", binaryTree.getTraversalNodes());
-        binaryTree.traverseLevel();
-        assertEquals("A B C D E F G", binaryTree.getTraversalNodes());
+        buffer = new StringBuffer();
+        binaryTree.traversePreorder(visit -> addText(visit));
+        assertEquals("A B D E F G C", buffer.toString());
+
+        buffer = new StringBuffer();
+        binaryTree.traverseInorder(visit -> addText(visit));
+        assertEquals("D B F E G A C", buffer.toString());
+
+        buffer = new StringBuffer();
+        binaryTree.traversePostorder(visit -> addText(visit));
+        assertEquals("D F G E B C A", buffer.toString());
+
+        buffer = new StringBuffer();
+        binaryTree.traverseLevel(visit -> addText(visit));
+        assertEquals("A B C D E F G", buffer.toString());
+    }
+
+    private void addText(Node<String> node) {
+        if(buffer.length() > 0) buffer.append(" ");
+        buffer.append(node.getData());
     }
 }
