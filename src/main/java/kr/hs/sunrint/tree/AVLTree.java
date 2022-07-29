@@ -1,54 +1,8 @@
 package kr.hs.sunrint.tree;
 
-import kr.hs.sunrint.exception.DuplicatedTreeKeyException;
-import kr.hs.sunrint.exception.NotExistElementException;
-
 public class AVLTree<T> extends BinarySearchTree<T> {
     public AVLTree(Node<T> rootNode) {
         super(rootNode);
-    }
-
-    @Override
-    public boolean insertNode(Node node) throws DuplicatedTreeKeyException {
-        try {
-            return super.insertNode(node);
-        } catch (DuplicatedTreeKeyException e) {
-            throw new DuplicatedTreeKeyException();
-        }
-    }
-
-    @Override
-    public boolean removeNode(int key) {
-        return super.removeNode(key);
-    }
-
-    @Override
-    public Node searchNode(int key) throws NotExistElementException {
-        try {
-            return super.searchNode(key);
-        } catch (NotExistElementException e) {
-            throw new NotExistElementException();
-        }
-    }
-
-    @Override
-    public void traversePreorder(VisitCallback callback) {
-        super.traversePreorder(callback);
-    }
-
-    @Override
-    public void traverseInorder(VisitCallback callback) {
-        super.traverseInorder(callback);
-    }
-
-    @Override
-    public void traversePostorder(VisitCallback callback) {
-        super.traversePostorder(callback);
-    }
-
-    @Override
-    public void traverseLevel(VisitCallback callback) {
-        super.traverseLevel(callback);
     }
 
     public void balanceTree() {
@@ -65,7 +19,7 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         int leftHeight = getHeight(node.getLeft());
         int rightHeight = getHeight(node.getRight());
-        int height = leftHeight > rightHeight ? leftHeight : rightHeight;
+        int height = Math.max(leftHeight, rightHeight);
 
         return ++height;
     }
