@@ -1,7 +1,7 @@
 package kr.hs.sunrint.tree;
 
 public class TreeHeap<T> extends Heap<T> {
-    private boolean insert;
+    private boolean inserted;
     private boolean find;
     private Node<T> lastNode;
 
@@ -9,17 +9,93 @@ public class TreeHeap<T> extends Heap<T> {
         super(rootNode, desc);
     }
 
-    public boolean insertNode(Node<T> node) {
-        insert = false;
+    @Override
+    protected void appendLeafNode(Node<T> node) {
+        inserted = false;
 
-        traverseLevel(visit -> insert(visit, node));
+        traverseLevel(parent -> {
+            if(inserted) return;
 
-        return true;
+            if(parent.getLeft() == null) parent.setLeft(node);
+            else if(parent.getRight() == null) parent.setRight(node);
+            else return;
+
+            node.setParent(parent);
+
+            inserted = true;
+        });
     }
 
     @Override
-    public Node<T> removeRootNode() {
-        return remove();
+    protected void swapUntilOk(Node<T> node) {
+        Node<T> parent = node.getParent();
+
+        if(parent == null) return;
+
+        while ((desc && parent.getKey() < node.getKey()) || (!desc && parent.getKey() > node.getKey())) {
+            swap(parent, node);
+            parent = node.getParent();
+
+            if(parent == null) return;
+        }
+    }
+
+    @Override
+    public void replaceRootNode() {
+        find = false;
+
+        traverseLevel(visit -> {
+            lastNode = visit;
+            Node<T> node = null;
+
+            if(find) return;
+
+            if(visit.getLeft() != null && visit.getRight() != null) return;
+            else if(visit.getLeft() == null) {
+                node = lastNode.getRight();
+                lastNode.setRight(null);
+            }
+            else if(visit.getRight() == null) {
+                node = visit.getLeft();
+                visit.setLeft(null);
+            }
+
+            find = true;
+
+            node.setParent(null);
+            node.setLeft(rootNode.getLeft());
+            node.setRight(rootNode.getRight());
+            rootNode = node;
+        });
+    }
+
+    @Override
+    protected void swapUntilOkRemove(Node<T> node) {
+        while (true) {
+            Node<T> leftNode = node.getLeft();
+            Node<T> rightNode = node.getRight();
+
+            if(leftNode == null && rightNode == null) break;
+
+            if(desc) {
+                if(leftNode != null && node.getKey() > leftNode.getKey()) leftNode = null;
+                if(rightNode != null && node.getKey() > rightNode.getKey()) rightNode = null;
+            }
+            else {
+                if(leftNode != null && node.getKey() < leftNode.getKey()) leftNode = null;
+                if(rightNode != null && node.getKey() < rightNode.getKey()) rightNode = null;
+            }
+
+            if(leftNode == null && rightNode != null) swap(node, rightNode);
+            else if(rightNode == null && leftNode != null) swap(node, leftNode);
+            else if(leftNode != null && rightNode != null) swap(node, (!desc && leftNode.getKey() < rightNode.getKey()) || (desc && leftNode.getKey() > rightNode.getKey()) ? leftNode : rightNode);
+            else break;
+        }
+    }
+
+    @Override
+    protected Node<T> getParent(Node<T> node) {
+        return node.getParent();
     }
 
     private void swap(Node<T> parent, Node<T> node) {
@@ -53,80 +129,5 @@ public class TreeHeap<T> extends Heap<T> {
         parent.setLeft(leftNode);
         parent.setRight(rightNode);
         parent.setParent(node);
-    }
-
-    private void insert(Node<T> parent, Node<T> node) {
-        if(insert) return;
-
-        if(parent.getLeft() != null && parent.getRight() != null) return;
-        else if(parent.getLeft() == null) parent.setLeft(node);
-        else if(parent.getRight() == null) parent.setRight(node);
-
-        node.setParent(parent);
-
-        insert = true;
-
-        while ((desc && parent.getKey() < node.getKey()) || (!desc && parent.getKey() > node.getKey())) {
-            swap(parent, node);
-            parent = node.getParent();
-
-            if(parent == null) return;
-        }
-    }
-
-    private Node<T> remove() {
-        find = false;
-        Node<T> root = rootNode;
-
-        traverseLevel(visit -> {
-            lastNode = visit;
-            Node<T> node = null;
-
-            if(find) return;
-
-            if(visit.getLeft() != null && visit.getRight() != null) return;
-            else if(visit.getLeft() == null) {
-                node = lastNode.getRight();
-                lastNode.setRight(null);
-            }
-            else if(visit.getRight() == null) {
-                node = visit.getLeft();
-                visit.setLeft(null);
-            }
-
-            find = true;
-
-            node.setParent(null);
-            node.setLeft(rootNode.getLeft());
-            node.setRight(rootNode.getRight());
-            rootNode = node;
-
-            swapNodes(node);
-        });
-
-        return root;
-    }
-
-    private void swapNodes(Node<T> node) {
-        while (true) {
-            Node<T> leftNode = node.getLeft();
-            Node<T> rightNode = node.getRight();
-
-            if(leftNode == null && rightNode == null) break;
-
-            if(desc) {
-                if(leftNode != null && node.getKey() > leftNode.getKey()) leftNode = null;
-                if(rightNode != null && node.getKey() > rightNode.getKey()) rightNode = null;
-            }
-            else {
-                if(leftNode != null && node.getKey() < leftNode.getKey()) leftNode = null;
-                if(rightNode != null && node.getKey() < rightNode.getKey()) rightNode = null;
-            }
-
-            if(leftNode == null && rightNode != null) swap(node, rightNode);
-            else if(rightNode == null && leftNode != null) swap(node, leftNode);
-            else if(leftNode != null && rightNode != null) swap(node, (!desc && leftNode.getKey() < rightNode.getKey()) || (desc && leftNode.getKey() > rightNode.getKey()) ? leftNode : rightNode);
-            else break;
-        }
     }
 }
