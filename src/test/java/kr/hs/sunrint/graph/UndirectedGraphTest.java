@@ -14,35 +14,35 @@ public class UndirectedGraphTest {
     public void setup() {
         undirectedGraph = new UndirectedGraph<>();
 
-        undirectedGraph.addNode(new Node<>("1", null));
+        undirectedGraph.addNode(new GraphNode<>("1", null));
     }
 
     @Test
     public void 노드_추가() {
         LinkedList<String> adjacencyList2 = new LinkedList<>();
         adjacencyList2.add("1");
-        undirectedGraph.addNode(new Node<>("2", adjacencyList2));
+        undirectedGraph.addNode(new GraphNode<>("2", adjacencyList2));
 
         LinkedList<String> adjacencyList3 = new LinkedList<>();
         adjacencyList3.add("1");
         adjacencyList3.add("2");
-        undirectedGraph.addNode(new Node<>("3", adjacencyList3));
+        undirectedGraph.addNode(new GraphNode<>("3", adjacencyList3));
 
         LinkedList<String> adjacencyList4 = new LinkedList<>();
         adjacencyList4.add("2");
         adjacencyList4.add("3");
-        undirectedGraph.addNode(new Node<>("4", adjacencyList4));
+        undirectedGraph.addNode(new GraphNode<>("4", adjacencyList4));
 
 
         LinkedList<String> adjacencyList5 = new LinkedList<>();
         adjacencyList5.add("3");
         adjacencyList5.add("4");
-        undirectedGraph.addNode(new Node<>("5", adjacencyList5));
+        undirectedGraph.addNode(new GraphNode<>("5", adjacencyList5));
 
 
         LinkedList<String> adjacencyList6 = new LinkedList<>();
         adjacencyList6.add("4");
-        undirectedGraph.addNode(new Node<>("6", adjacencyList6));
+        undirectedGraph.addNode(new GraphNode<>("6", adjacencyList6));
 
         assertEquals("2 3", getDataAll(undirectedGraph.searchNodeByData("1")));
         assertEquals("1 3 4", getDataAll(undirectedGraph.searchNodeByData("2")));
@@ -57,31 +57,31 @@ public class UndirectedGraphTest {
         LinkedList<String> adjacencyList2 = new LinkedList<>();
         adjacencyList2.clear();
         adjacencyList2.add("1");
-        undirectedGraph.addNode(new Node<>("2", adjacencyList2));
+        undirectedGraph.addNode(new GraphNode<>("2", adjacencyList2));
 
         LinkedList<String> adjacencyList3 = new LinkedList<>();
         adjacencyList3.add("1");
         adjacencyList3.add("2");
-        undirectedGraph.addNode(new Node<>("3", adjacencyList3));
+        undirectedGraph.addNode(new GraphNode<>("3", adjacencyList3));
 
         LinkedList<String> adjacencyList4 = new LinkedList<>();
         adjacencyList4.add("2");
         adjacencyList4.add("3");
-        Node<String> node4 = new Node<>("4", adjacencyList4);
-        undirectedGraph.addNode(node4);
+        GraphNode<String> graphNode4 = new GraphNode<>("4", adjacencyList4);
+        undirectedGraph.addNode(graphNode4);
 
 
         LinkedList<String> adjacencyList5 = new LinkedList<>();
         adjacencyList5.add("3");
         adjacencyList5.add("4");
-        undirectedGraph.addNode(new Node<>("5", adjacencyList5));
+        undirectedGraph.addNode(new GraphNode<>("5", adjacencyList5));
 
 
         LinkedList<String> adjacencyList6 = new LinkedList<>();
         adjacencyList6.add("4");
-        undirectedGraph.addNode(new Node<>("6", adjacencyList6));
+        undirectedGraph.addNode(new GraphNode<>("6", adjacencyList6));
 
-        undirectedGraph.removeNode(node4);
+        undirectedGraph.removeNode(graphNode4);
 
         assertEquals("2 3", getDataAll(undirectedGraph.searchNodeByData("1")));
         assertEquals("1 3", getDataAll(undirectedGraph.searchNodeByData("2")));
@@ -96,29 +96,29 @@ public class UndirectedGraphTest {
 
         LinkedList<String> adjacencyList2 = new LinkedList<>();
         adjacencyList2.add("1");
-        undirectedGraph.addNode(new Node<>("2", adjacencyList2));
+        undirectedGraph.addNode(new GraphNode<>("2", adjacencyList2));
 
         LinkedList<String> adjacencyList3 = new LinkedList<>();
         adjacencyList3.add("1");
         adjacencyList3.add("2");
-        undirectedGraph.addNode(new Node<>("3", adjacencyList3));
+        undirectedGraph.addNode(new GraphNode<>("3", adjacencyList3));
 
         LinkedList<String> adjacencyList4 = new LinkedList<>();
         adjacencyList4.add("2");
         adjacencyList4.add("3");
-        Node<String> node4 = new Node<>("4", adjacencyList4);
-        undirectedGraph.addNode(node4);
+        GraphNode<String> graphNode4 = new GraphNode<>("4", adjacencyList4);
+        undirectedGraph.addNode(graphNode4);
 
 
         LinkedList<String> adjacencyList5 = new LinkedList<>();
         adjacencyList5.add("3");
         adjacencyList5.add("4");
-        undirectedGraph.addNode(new Node<>("5", adjacencyList5));
+        undirectedGraph.addNode(new GraphNode<>("5", adjacencyList5));
 
 
         LinkedList<String> adjacencyList6 = new LinkedList<>();
         adjacencyList6.add("4");
-        undirectedGraph.addNode(new Node<>("6", adjacencyList6));
+        undirectedGraph.addNode(new GraphNode<>("6", adjacencyList6));
 
         undirectedGraph.depthFirstSearch(visit -> addText(visit));
 
@@ -131,43 +131,43 @@ public class UndirectedGraphTest {
 
         LinkedList<String> adjacencyList2 = new LinkedList<>();
         adjacencyList2.add("1");
-        undirectedGraph.addNode(new Node<>("2", adjacencyList2));
+        undirectedGraph.addNode(new GraphNode<>("2", adjacencyList2));
 
         LinkedList<String> adjacencyList3 = new LinkedList<>();
         adjacencyList3.add("1");
         adjacencyList3.add("2");
-        undirectedGraph.addNode(new Node<>("3", adjacencyList3));
+        undirectedGraph.addNode(new GraphNode<>("3", adjacencyList3));
 
         LinkedList<String> adjacencyList4 = new LinkedList<>();
         adjacencyList4.add("2");
         adjacencyList4.add("3");
-        Node<String> node4 = new Node<>("4", adjacencyList4);
-        undirectedGraph.addNode(node4);
+        GraphNode<String> graphNode4 = new GraphNode<>("4", adjacencyList4);
+        undirectedGraph.addNode(graphNode4);
 
 
         LinkedList<String> adjacencyList5 = new LinkedList<>();
         adjacencyList5.add("3");
         adjacencyList5.add("4");
-        undirectedGraph.addNode(new Node<>("5", adjacencyList5));
+        undirectedGraph.addNode(new GraphNode<>("5", adjacencyList5));
 
 
         LinkedList<String> adjacencyList6 = new LinkedList<>();
         adjacencyList6.add("4");
-        undirectedGraph.addNode(new Node<>("6", adjacencyList6));
+        undirectedGraph.addNode(new GraphNode<>("6", adjacencyList6));
 
         undirectedGraph.breadthFirstSearch(visit -> addText(visit));
 
         assertEquals("1 2 3 4 5 6", buffer.toString());
     }
 
-    private void addText(Node<String> node) {
+    private void addText(GraphNode<String> graphNode) {
         if(buffer.length() > 0) buffer.append(" ");
-        buffer.append(node.getData());
+        buffer.append(graphNode.getData());
     }
 
-    private String getDataAll(Node<String> node) {
+    private String getDataAll(GraphNode<String> graphNode) {
         String result = "";
-        LinkedList<String> adjacencyList = node.getAdjacencyList();
+        LinkedList<String> adjacencyList = graphNode.getAdjacencyList();
 
         for(int i = 0; i < adjacencyList.size(); i++) {
             String data = adjacencyList.get(i);

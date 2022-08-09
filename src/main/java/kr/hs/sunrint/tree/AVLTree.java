@@ -1,73 +1,73 @@
 package kr.hs.sunrint.tree;
 
 public class AVLTree<T> extends BinarySearchTree<T> {
-    public AVLTree(Node<T> rootNode) {
-        super(rootNode);
+    public AVLTree(TreeNode<T> rootTreeNode) {
+        super(rootTreeNode);
     }
 
     public void balanceTree() {
         traverseLevel(visit -> balanceTree(visit));
     }
 
-    public int getBalanceFactor(Node<T> node) {
-        return getHeight(node.getLeft()) - getHeight(node.getRight());
+    public int getBalanceFactor(TreeNode<T> treeNode) {
+        return getHeight(treeNode.getLeft()) - getHeight(treeNode.getRight());
     }
 
-    public int getHeight(Node<T> node) {
-        if(node == null) return 0;
-        if(node.getLeft() == null && node.getRight() == null) return 1;
+    public int getHeight(TreeNode<T> treeNode) {
+        if(treeNode == null) return 0;
+        if(treeNode.getLeft() == null && treeNode.getRight() == null) return 1;
 
-        int leftHeight = getHeight(node.getLeft());
-        int rightHeight = getHeight(node.getRight());
+        int leftHeight = getHeight(treeNode.getLeft());
+        int rightHeight = getHeight(treeNode.getRight());
         int height = Math.max(leftHeight, rightHeight);
 
         return ++height;
     }
 
-    public void balanceTree(Node<T> node) {
-        int bf = getBalanceFactor(node);
+    public void balanceTree(TreeNode<T> treeNode) {
+        int bf = getBalanceFactor(treeNode);
 
         if( bf >= -1 && bf <= 1) return;
 
         if(bf > 1) {
-            Node<T> leftNode = node.getLeft();
+            TreeNode<T> leftTreeNode = treeNode.getLeft();
 
-            if(getBalanceFactor(leftNode) < 0) leftRotate(leftNode);
+            if(getBalanceFactor(leftTreeNode) < 0) leftRotate(leftTreeNode);
 
-            rightRotate(node);
+            rightRotate(treeNode);
         }
         else if(bf < -1) {
-            Node<T> rightNode = node.getRight();
+            TreeNode<T> rightTreeNode = treeNode.getRight();
 
-            if(getBalanceFactor(rightNode) > 0) rightRotate(rightNode);
+            if(getBalanceFactor(rightTreeNode) > 0) rightRotate(rightTreeNode);
 
-            leftRotate(node);
+            leftRotate(treeNode);
         }
     }
 
-    private void rightRotate(Node<T> node) {
-        Node<T> parent = node.getParent();
-        Node<T> leftNode = node.getLeft();
-        Node<T> temp = leftNode.getRight();
+    private void rightRotate(TreeNode<T> treeNode) {
+        TreeNode<T> parent = treeNode.getParent();
+        TreeNode<T> leftTreeNode = treeNode.getLeft();
+        TreeNode<T> temp = leftTreeNode.getRight();
 
-        leftNode.setParent(parent);
-        leftNode.setRight(node);
-        node.setLeft(temp);
+        leftTreeNode.setParent(parent);
+        leftTreeNode.setRight(treeNode);
+        treeNode.setLeft(temp);
 
-        if(parent == null) rootNode = leftNode;
-        else parent.setRight(leftNode);
+        if(parent == null) rootTreeNode = leftTreeNode;
+        else parent.setRight(leftTreeNode);
     }
 
-    private void leftRotate(Node<T> node) {
-        Node<T> parent = node.getParent();
-        Node<T> rightNode = node.getRight();
-        Node<T> temp = rightNode.getLeft();
+    private void leftRotate(TreeNode<T> treeNode) {
+        TreeNode<T> parent = treeNode.getParent();
+        TreeNode<T> rightTreeNode = treeNode.getRight();
+        TreeNode<T> temp = rightTreeNode.getLeft();
 
-        rightNode.setParent(parent);
-        rightNode.setLeft(node);
-        node.setRight(temp);
+        rightTreeNode.setParent(parent);
+        rightTreeNode.setLeft(treeNode);
+        treeNode.setRight(temp);
 
-        if(parent == null) rootNode = rightNode;
-        else parent.setLeft(rightNode);
+        if(parent == null) rootTreeNode = rightTreeNode;
+        else parent.setLeft(rightTreeNode);
     }
 }

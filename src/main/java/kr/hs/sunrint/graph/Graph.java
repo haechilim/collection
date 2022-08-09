@@ -4,24 +4,24 @@ import kr.hs.sunrint.exception.NotExistElementException;
 import kr.hs.sunrint.list.ArrayList;
 
 public abstract class Graph<T> {
-    protected ArrayList<Node<T>> nodeList = new ArrayList<>();
+    protected ArrayList<GraphNode<T>> nodeList = new ArrayList<>();
 
-    protected abstract boolean addNode(Node<T> node);
-    protected abstract boolean removeNode(Node<T> node);
+    protected abstract boolean addNode(GraphNode<T> graphNode);
+    protected abstract boolean removeNode(GraphNode<T> graphNode);
     protected abstract void depthFirstSearch(VisitCallback callback);
     protected abstract void breadthFirstSearch(VisitCallback callback);
 
-    protected Node<T> searchNodeByData(T data) throws NotExistElementException {
+    protected GraphNode<T> searchNodeByData(T data) throws NotExistElementException {
         for(int i = 0; i < nodeList.size(); i++) {
-            Node<T> node = nodeList.get(i);
+            GraphNode<T> graphNode = nodeList.get(i);
 
-            if(node.data == data) return node;
+            if(graphNode.data == data) return graphNode;
         }
 
         throw new NotExistElementException();
     }
 
     protected interface VisitCallback {
-        void action(Node visit);
+        void action(GraphNode visit);
     }
 }

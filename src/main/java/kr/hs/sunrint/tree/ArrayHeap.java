@@ -3,30 +3,30 @@ package kr.hs.sunrint.tree;
 import kr.hs.sunrint.list.ArrayList;
 
 public class ArrayHeap<T> extends Heap<T> {
-    private ArrayList<Node<T>> arrayList = new ArrayList<>();
+    private ArrayList<TreeNode<T>> arrayList = new ArrayList<>();
 
-    public ArrayHeap(Node<T> rootNode, boolean desc) {
-        super(rootNode, desc);
+    public ArrayHeap(TreeNode<T> rootTreeNode, boolean desc) {
+        super(rootTreeNode, desc);
         arrayList.add(null);
-        arrayList.add(rootNode);
+        arrayList.add(rootTreeNode);
     }
 
     @Override
-    protected void appendLeafNode(Node<T> node) {
-        arrayList.add(node);
+    protected void appendLeafNode(TreeNode<T> treeNode) {
+        arrayList.add(treeNode);
     }
 
     @Override
-    protected void swapUntilOk(Node<T> node) {
+    protected void swapUntilOk(TreeNode<T> treeNode) {
         while (true) {
-            int index = arrayList.indexOf(node);
-            Node<T> parent = arrayList.get(index / 2);
+            int index = arrayList.indexOf(treeNode);
+            TreeNode<T> parent = arrayList.get(index / 2);
 
             if(parent == null) continue;
 
-            if((desc && parent.getKey() < node.getKey()) || (!desc && parent.getKey() > node.getKey())) {
+            if((desc && parent.getKey() < treeNode.getKey()) || (!desc && parent.getKey() > treeNode.getKey())) {
                 arrayList.set(index, parent);
-                arrayList.set(index / 2, node);
+                arrayList.set(index / 2, treeNode);
             }
             else break;
         }
@@ -36,48 +36,48 @@ public class ArrayHeap<T> extends Heap<T> {
     protected void replaceRootNode() {
         if(arrayList.size() < 2) return;
 
-        Node<T> data = arrayList.get(arrayList.size() - 1);
+        TreeNode<T> data = arrayList.get(arrayList.size() - 1);
         arrayList.remove(arrayList.size() - 1);
         arrayList.set(1, data);
-        rootNode = data;
+        rootTreeNode = data;
     }
 
     @Override
-    protected void swapUntilOkRemove(Node<T> node) {
+    protected void swapUntilOkRemove(TreeNode<T> treeNode) {
         int index;
 
         while (true) {
-            index = arrayList.indexOf(node);
+            index = arrayList.indexOf(treeNode);
             int leftIndex = index * 2;
             int rightIndex = index * 2 + 1;
 
-            Node<T> leftData = leftIndex < arrayList.size() ? arrayList.get(leftIndex) : null;
-            Node<T> rightData = rightIndex < arrayList.size() ? arrayList.get(rightIndex) : null;
+            TreeNode<T> leftData = leftIndex < arrayList.size() ? arrayList.get(leftIndex) : null;
+            TreeNode<T> rightData = rightIndex < arrayList.size() ? arrayList.get(rightIndex) : null;
 
             if(leftData == null && rightData == null) break;
 
             if(desc) {
-                if(leftData != null && node.getKey() > leftData.getKey()) leftData = null;
-                if(rightData != null && node.getKey() > rightData.getKey()) rightData = null;
+                if(leftData != null && treeNode.getKey() > leftData.getKey()) leftData = null;
+                if(rightData != null && treeNode.getKey() > rightData.getKey()) rightData = null;
             }
             else {
-                if(leftData != null && node.getKey() < leftData.getKey()) leftData = null;
-                if(rightData != null && node.getKey() < rightData.getKey()) rightData = null;
+                if(leftData != null && treeNode.getKey() < leftData.getKey()) leftData = null;
+                if(rightData != null && treeNode.getKey() < rightData.getKey()) rightData = null;
             }
 
-            if(leftData == null && rightData != null) swap(node, rightData);
-            else if(rightData == null && leftData != null) swap(node, leftData);
-            else if(leftData != null && rightData != null) swap(node, (!desc && leftData.getKey() < rightData.getKey()) || (desc && leftData.getKey() > rightData.getKey()) ? leftData : rightData);
+            if(leftData == null && rightData != null) swap(treeNode, rightData);
+            else if(rightData == null && leftData != null) swap(treeNode, leftData);
+            else if(leftData != null && rightData != null) swap(treeNode, (!desc && leftData.getKey() < rightData.getKey()) || (desc && leftData.getKey() > rightData.getKey()) ? leftData : rightData);
             else break;
         }
     }
 
     @Override
-    protected Node<T> getParent(Node<T> node) {
-        return arrayList.get(arrayList.indexOf(node) / 2);
+    protected TreeNode<T> getParent(TreeNode<T> treeNode) {
+        return arrayList.get(arrayList.indexOf(treeNode) / 2);
     }
 
-    private void swap(Node<T> data1, Node<T> data2) {
+    private void swap(TreeNode<T> data1, TreeNode<T> data2) {
         int index1 = arrayList.indexOf(data1);
         int index2 = arrayList.indexOf(data2);
 

@@ -1,23 +1,32 @@
 package kr.hs.sunrint.graph;
 
 import kr.hs.sunrint.exception.NotExistElementException;
+import kr.hs.sunrint.list.ArrayList;
 import kr.hs.sunrint.list.LinkedList;
+import kr.hs.sunrint.tree.BinaryTree;
+import kr.hs.sunrint.tree.TreeNode;
 
 public class WeightedGraph<T> extends UndirectedGraph<T> {
-    @Override
-    protected boolean addNode(Node<T> node) {
-        if(!(node instanceof WeightedNode)) return false;
+    private ArrayList<WeightedGraphNode<T>> availableNodes;
+    private ArrayList<WeightedGraphNode<T>> usedNodes;
+    private ArrayList<Integer> availableWeights;
+    private ArrayList<Integer> usedWeights;
+    private WeightedGraphNode<T> currentNode;
 
-        updateWeightList((WeightedNode<T>) node);
-        return super.addNode(node);
+    @Override
+    protected boolean addNode(GraphNode<T> graphNode) {
+        if(!(graphNode instanceof WeightedGraphNode)) return false;
+
+        updateWeightList((WeightedGraphNode<T>) graphNode);
+        return super.addNode(graphNode);
     }
 
     @Override
-    protected boolean removeNode(Node<T> node) {
-        if(!(node instanceof WeightedNode)) return false;
+    protected boolean removeNode(GraphNode<T> graphNode) {
+        if(!(graphNode instanceof WeightedGraphNode)) return false;
 
-        removeWeight((WeightedNode<T>) node);
-        return super.removeNode(node);
+        removeWeight((WeightedGraphNode<T>) graphNode);
+        return super.removeNode(graphNode);
     }
 
     @Override
@@ -30,12 +39,12 @@ public class WeightedGraph<T> extends UndirectedGraph<T> {
         super.breadthFirstSearch(callback);
     }
 
-    private void updateWeightList(WeightedNode<T> node) {
+    private void updateWeightList(WeightedGraphNode<T> node) {
         LinkedList<T> adjacencyList = node.adjacencyList;
 
         for(int i = 0; i < adjacencyList.size(); i++) {
             try {
-                LinkedList<Integer> weightList = ((WeightedNode<T>) searchNodeByData(adjacencyList.get(i))).getWeightList();
+                LinkedList<Integer> weightList = ((WeightedGraphNode<T>) searchNodeByData(adjacencyList.get(i))).getWeightList();
                 if(node.getWeightList().size() > 0) weightList.add(node.getWeightList().get(i));
             } catch (NotExistElementException e) {
                 continue;
@@ -43,15 +52,117 @@ public class WeightedGraph<T> extends UndirectedGraph<T> {
         }
     }
 
-    private void removeWeight(WeightedNode<T> node) {
+    private void removeWeight(WeightedGraphNode<T> node) {
         LinkedList<T> adjacencyList = node.adjacencyList;
 
         for(int i = 0;i < adjacencyList.size(); i++) {
-            WeightedNode<T> currentNode = (WeightedNode<T>) searchNodeByData(adjacencyList.get(i));
+            WeightedGraphNode<T> currentNode = (WeightedGraphNode<T>) searchNodeByData(adjacencyList.get(i));
             int weight = node.getWeightList().get(i);
             LinkedList<Integer> weightList = currentNode.getWeightList();
 
             weightList.remove(weightList.indexOf(weight));
         }
+    }
+
+    public BinaryTree<T> prim() {
+        init();
+
+        BinaryTree<T> binaryTree = new BinaryTree<>(new TreeNode<>(currentNode.data));
+
+        while (usedNodes.size() != nodeList.size()) {
+            LinkedList<T> adjacencyList = currentNode.getAdjacencyList();
+
+            addAvailables(adjacencyList);
+            int indexToUse = getIndexToUse();
+            insertNode(binaryTree, indexToUse);
+            updateLists(indexToUse);
+        }
+
+        return binaryTree;
+    }
+
+    private void init() {
+        availableNodes = new ArrayList<>();
+        availableWeights = new ArrayList<>();
+        usedNodes = new ArrayList<>();
+        usedWeights = new ArrayList<>();
+        currentNode = (WeightedGraphNode<T>) nodeList.get(0);
+        usedNodes.add(currentNode);
+    }
+
+    private void addAvailables(LinkedList<T> adjacencyList) {
+        for(int i = 0; i < adjacencyList.size(); i++) {
+            WeightedGraphNode<T> node = (WeightedGraphNode<T>) searchNodeByData(adjacencyList.get(i));
+            int index = node.adjacencyList.indexOf(currentNode.data);
+
+            if(usedNodes.contains(node)) continue;
+            if(!availableNodes.contains(node)) availableNodes.add(node);
+            availableWeights.add(node.getWeightList().get(index));
+        }
+    }
+
+    private int getIndexToUse() {
+        while (true) {
+            int index = getIndexMinWeight();
+
+            if(getWeightGraphNodeByIndex(index) == null) availableWeights.remove(index);
+            else if(!usedNodes.contains(getWeightGraphNodeByIndex(index))) return index;
+        }
+    }
+
+    private int getIndexMinWeight() {
+        int minIndex = 0;
+
+        for(int i = 0; i < availableWeights.size(); i++) {
+            if(availableWeights.get(i) < availableWeights.get(minIndex)) minIndex = i;
+        }
+
+        return minIndex;
+    }
+
+    private void insertNode(BinaryTree<T> binaryTree, int index) {
+        binaryTree.traverseLevel(visit -> {
+            if(visit.getData() != getExNode(index).data) return;
+            TreeNode<T> treeNode = new TreeNode(getWeightGraphNodeByIndex(index).data);
+
+            if(visit.getLeft() == null) visit.setLeft(treeNode);
+            else if(visit.getRight() == null) visit.setRight(treeNode);
+        });
+    }
+
+    private WeightedGraphNode<T> getExNode(int index) {
+        WeightedGraphNode<T> exNode = null;
+
+        int weight = availableWeights.get(index);
+
+        for(int i = 0; i < nodeList.size(); i++) {
+            WeightedGraphNode<T> node = (WeightedGraphNode<T>) nodeList.get(i);
+
+            if(node == getWeightGraphNodeByIndex(index)) continue;
+
+            if(node.getWeightList().contains(weight)) exNode = node;
+        }
+
+        return exNode;
+    }
+
+    private void updateLists(int index) {
+        currentNode = getWeightGraphNodeByIndex(index);
+        usedNodes.add(currentNode);
+        usedWeights.add(availableWeights.get(index));
+        availableNodes.remove(availableNodes.indexOf(currentNode));
+        availableWeights.remove(index);
+    }
+
+    private WeightedGraphNode<T> getWeightGraphNodeByIndex(int index) {
+        int weight = availableWeights.get(index);
+
+        for(int i = 0; i < availableNodes.size(); i++) {
+            WeightedGraphNode<T> node = availableNodes.get(i);
+
+            if(node.getWeightList().contains(weight)) return node;
+        }
+
+        return null;
     }
 }

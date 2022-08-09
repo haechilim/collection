@@ -5,39 +5,39 @@ import kr.hs.sunrint.exception.NotSupportedException;
 public abstract class Heap<T> extends BinaryTree {
     protected boolean desc;
 
-    public Heap(Node rootNode, boolean desc) {
-        super(rootNode);
+    public Heap(TreeNode rootTreeNode, boolean desc) {
+        super(rootTreeNode);
         this.desc = desc;
     }
 
-    protected boolean insertNode(Node<T> node) {
-        appendLeafNode(node);
-        swapUntilOk(node);
+    protected boolean insertNode(TreeNode<T> treeNode) {
+        appendLeafNode(treeNode);
+        swapUntilOk(treeNode);
         return true;
     }
 
-    protected Node<T> removeRootNode() {
-        Node<T> root = rootNode;
+    protected TreeNode<T> removeRootNode() {
+        TreeNode<T> root = rootTreeNode;
 
         replaceRootNode();
-        swapUntilOkRemove(rootNode);
+        swapUntilOkRemove(rootTreeNode);
 
         return root;
     }
 
-    protected abstract void appendLeafNode(Node<T> node);
-    protected abstract void swapUntilOk(Node<T> node);
+    protected abstract void appendLeafNode(TreeNode<T> treeNode);
+    protected abstract void swapUntilOk(TreeNode<T> treeNode);
     protected abstract void replaceRootNode();
-    protected abstract void swapUntilOkRemove(Node<T> node);
-    protected abstract Node<T> getParent(Node<T> node);
+    protected abstract void swapUntilOkRemove(TreeNode<T> treeNode);
+    protected abstract TreeNode<T> getParent(TreeNode<T> treeNode);
 
     @Override
-    public boolean insertLeftNode(Node parent, Node node) throws NotSupportedException {
+    public boolean insertLeftNode(TreeNode parent, TreeNode treeNode) throws NotSupportedException {
         throw new NotSupportedException();
     }
 
     @Override
-    public boolean insertRightNode(Node parent, Node node) throws NotSupportedException {
+    public boolean insertRightNode(TreeNode parent, TreeNode treeNode) throws NotSupportedException {
         throw new NotSupportedException();
     }
 }

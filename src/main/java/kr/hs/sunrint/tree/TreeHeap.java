@@ -3,38 +3,38 @@ package kr.hs.sunrint.tree;
 public class TreeHeap<T> extends Heap<T> {
     private boolean inserted;
     private boolean find;
-    private Node<T> lastNode;
+    private TreeNode<T> lastTreeNode;
 
-    public TreeHeap(Node rootNode, boolean desc) {
-        super(rootNode, desc);
+    public TreeHeap(TreeNode rootTreeNode, boolean desc) {
+        super(rootTreeNode, desc);
     }
 
     @Override
-    protected void appendLeafNode(Node<T> node) {
+    protected void appendLeafNode(TreeNode<T> treeNode) {
         inserted = false;
 
         traverseLevel(parent -> {
             if(inserted) return;
 
-            if(parent.getLeft() == null) parent.setLeft(node);
-            else if(parent.getRight() == null) parent.setRight(node);
+            if(parent.getLeft() == null) parent.setLeft(treeNode);
+            else if(parent.getRight() == null) parent.setRight(treeNode);
             else return;
 
-            node.setParent(parent);
+            treeNode.setParent(parent);
 
             inserted = true;
         });
     }
 
     @Override
-    protected void swapUntilOk(Node<T> node) {
-        Node<T> parent = node.getParent();
+    protected void swapUntilOk(TreeNode<T> treeNode) {
+        TreeNode<T> parent = treeNode.getParent();
 
         if(parent == null) return;
 
-        while ((desc && parent.getKey() < node.getKey()) || (!desc && parent.getKey() > node.getKey())) {
-            swap(parent, node);
-            parent = node.getParent();
+        while ((desc && parent.getKey() < treeNode.getKey()) || (!desc && parent.getKey() > treeNode.getKey())) {
+            swap(parent, treeNode);
+            parent = treeNode.getParent();
 
             if(parent == null) return;
         }
@@ -45,89 +45,89 @@ public class TreeHeap<T> extends Heap<T> {
         find = false;
 
         traverseLevel(visit -> {
-            lastNode = visit;
-            Node<T> node = null;
+            lastTreeNode = visit;
+            TreeNode<T> treeNode = null;
 
             if(find) return;
 
             if(visit.getLeft() != null && visit.getRight() != null) return;
             else if(visit.getLeft() == null) {
-                node = lastNode.getRight();
-                lastNode.setRight(null);
+                treeNode = lastTreeNode.getRight();
+                lastTreeNode.setRight(null);
             }
             else if(visit.getRight() == null) {
-                node = visit.getLeft();
+                treeNode = visit.getLeft();
                 visit.setLeft(null);
             }
 
             find = true;
 
-            node.setParent(null);
-            node.setLeft(rootNode.getLeft());
-            node.setRight(rootNode.getRight());
-            rootNode = node;
+            treeNode.setParent(null);
+            treeNode.setLeft(rootTreeNode.getLeft());
+            treeNode.setRight(rootTreeNode.getRight());
+            rootTreeNode = treeNode;
         });
     }
 
     @Override
-    protected void swapUntilOkRemove(Node<T> node) {
+    protected void swapUntilOkRemove(TreeNode<T> treeNode) {
         while (true) {
-            Node<T> leftNode = node.getLeft();
-            Node<T> rightNode = node.getRight();
+            TreeNode<T> leftTreeNode = treeNode.getLeft();
+            TreeNode<T> rightTreeNode = treeNode.getRight();
 
-            if(leftNode == null && rightNode == null) break;
+            if(leftTreeNode == null && rightTreeNode == null) break;
 
             if(desc) {
-                if(leftNode != null && node.getKey() > leftNode.getKey()) leftNode = null;
-                if(rightNode != null && node.getKey() > rightNode.getKey()) rightNode = null;
+                if(leftTreeNode != null && treeNode.getKey() > leftTreeNode.getKey()) leftTreeNode = null;
+                if(rightTreeNode != null && treeNode.getKey() > rightTreeNode.getKey()) rightTreeNode = null;
             }
             else {
-                if(leftNode != null && node.getKey() < leftNode.getKey()) leftNode = null;
-                if(rightNode != null && node.getKey() < rightNode.getKey()) rightNode = null;
+                if(leftTreeNode != null && treeNode.getKey() < leftTreeNode.getKey()) leftTreeNode = null;
+                if(rightTreeNode != null && treeNode.getKey() < rightTreeNode.getKey()) rightTreeNode = null;
             }
 
-            if(leftNode == null && rightNode != null) swap(node, rightNode);
-            else if(rightNode == null && leftNode != null) swap(node, leftNode);
-            else if(leftNode != null && rightNode != null) swap(node, (!desc && leftNode.getKey() < rightNode.getKey()) || (desc && leftNode.getKey() > rightNode.getKey()) ? leftNode : rightNode);
+            if(leftTreeNode == null && rightTreeNode != null) swap(treeNode, rightTreeNode);
+            else if(rightTreeNode == null && leftTreeNode != null) swap(treeNode, leftTreeNode);
+            else if(leftTreeNode != null && rightTreeNode != null) swap(treeNode, (!desc && leftTreeNode.getKey() < rightTreeNode.getKey()) || (desc && leftTreeNode.getKey() > rightTreeNode.getKey()) ? leftTreeNode : rightTreeNode);
             else break;
         }
     }
 
     @Override
-    protected Node<T> getParent(Node<T> node) {
-        return node.getParent();
+    protected TreeNode<T> getParent(TreeNode<T> treeNode) {
+        return treeNode.getParent();
     }
 
-    private void swap(Node<T> parent, Node<T> node) {
-        Node<T> leftNode = node.getLeft();
-        Node<T> rightNode = node.getRight();
-        Node<T> grandParent = parent.getParent();
+    private void swap(TreeNode<T> parent, TreeNode<T> treeNode) {
+        TreeNode<T> leftTreeNode = treeNode.getLeft();
+        TreeNode<T> rightTreeNode = treeNode.getRight();
+        TreeNode<T> grandParent = parent.getParent();
 
-        if(grandParent == null) rootNode = node;
-        else if(grandParent.getRight() == parent) grandParent.setRight(node);
-        else if(grandParent.getLeft() == parent) grandParent.setLeft(node);
+        if(grandParent == null) rootTreeNode = treeNode;
+        else if(grandParent.getRight() == parent) grandParent.setRight(treeNode);
+        else if(grandParent.getLeft() == parent) grandParent.setLeft(treeNode);
 
-        node.setParent(grandParent);
+        treeNode.setParent(grandParent);
 
-        if(parent.getLeft() == node) {
-            Node<T> right = parent.getRight();
+        if(parent.getLeft() == treeNode) {
+            TreeNode<T> right = parent.getRight();
 
-            node.setRight(right);
-            node.setLeft(parent);
+            treeNode.setRight(right);
+            treeNode.setLeft(parent);
 
-            if(right != null) right.setParent(node);
+            if(right != null) right.setParent(treeNode);
         }
-        else if(parent.getRight() == node) {
-            Node<T> left = parent.getLeft();
+        else if(parent.getRight() == treeNode) {
+            TreeNode<T> left = parent.getLeft();
 
-            node.setRight(parent);
-            node.setLeft(left);
+            treeNode.setRight(parent);
+            treeNode.setLeft(left);
 
-            if(left != null) left.setParent(node);
+            if(left != null) left.setParent(treeNode);
         }
 
-        parent.setLeft(leftNode);
-        parent.setRight(rightNode);
-        parent.setParent(node);
+        parent.setLeft(leftTreeNode);
+        parent.setRight(rightTreeNode);
+        parent.setParent(treeNode);
     }
 }

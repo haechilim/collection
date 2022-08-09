@@ -13,24 +13,24 @@ public class BinarySearchTreeTest {
     public void setup() {
         buffer = new StringBuffer();
 
-        Node<String> root = new Node<>("50", 50);
-        Node<String> node1 = new Node<>("1", 1);
-        Node<String> node30 = new Node<>("30", 30);
-        Node<String> node35 = new Node<>("35", 35);
-        Node<String> node60 = new Node<>("60", 60);
-        Node<String> node70 = new Node<>("70", 70);
-        Node<String> node80 = new Node<>("80", 80);
+        TreeNode<String> root = new TreeNode<>("50", 50);
+        TreeNode<String> treeNode1 = new TreeNode<>("1", 1);
+        TreeNode<String> treeNode30 = new TreeNode<>("30", 30);
+        TreeNode<String> treeNode35 = new TreeNode<>("35", 35);
+        TreeNode<String> treeNode60 = new TreeNode<>("60", 60);
+        TreeNode<String> treeNode70 = new TreeNode<>("70", 70);
+        TreeNode<String> treeNode80 = new TreeNode<>("80", 80);
 
         binarySearchTree = new BinarySearchTree<>(root);
 
-        binarySearchTree.insertNode(node30);
-        binarySearchTree.insertNode(node70);
-        binarySearchTree.insertNode(node80);
-        binarySearchTree.insertNode(node60);
-        binarySearchTree.insertNode(node1);
-        binarySearchTree.insertNode(node35);
-        binarySearchTree.insertNode(new Node<>("34", 34));
-        binarySearchTree.insertNode(new Node<>("65", 65));
+        binarySearchTree.insertNode(treeNode30);
+        binarySearchTree.insertNode(treeNode70);
+        binarySearchTree.insertNode(treeNode80);
+        binarySearchTree.insertNode(treeNode60);
+        binarySearchTree.insertNode(treeNode1);
+        binarySearchTree.insertNode(treeNode35);
+        binarySearchTree.insertNode(new TreeNode<>("34", 34));
+        binarySearchTree.insertNode(new TreeNode<>("65", 65));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class BinarySearchTreeTest {
 
     @Test
     public void 자식_노드가_왼쪽_1개인_루트노드_삭제() {
-        BinarySearchTree<String> tree = new BinarySearchTree<>(new Node<>("50", 50));
-        tree.insertNode(new Node<>("35", 35));
+        BinarySearchTree<String> tree = new BinarySearchTree<>(new TreeNode<>("50", 50));
+        tree.insertNode(new TreeNode<>("35", 35));
 
         tree.removeNode(50);
         tree.traverseLevel(visit -> addText(visit));
@@ -71,8 +71,8 @@ public class BinarySearchTreeTest {
 
     @Test
     public void 자식_노드가_오른쪽_1개인_루트노드_삭제() {
-        BinarySearchTree<String> tree = new BinarySearchTree<>(new Node<>("50", 50));
-        tree.insertNode(new Node<>("70", 70));
+        BinarySearchTree<String> tree = new BinarySearchTree<>(new TreeNode<>("50", 50));
+        tree.insertNode(new TreeNode<>("70", 70));
 
         tree.removeNode(50);
         tree.traverseLevel(visit -> addText(visit));
@@ -93,8 +93,8 @@ public class BinarySearchTreeTest {
         assertEquals("60 30 70 1 35 65 80 34", buffer.toString());
     }
 
-    private void addText(Node<String> node) {
+    private void addText(TreeNode<String> treeNode) {
         if(buffer.length() > 0) buffer.append(" ");
-        buffer.append(node.getData());
+        buffer.append(treeNode.getData());
     }
 }

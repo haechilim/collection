@@ -8,22 +8,22 @@ import kr.hs.sunrint.list.Stack;
 
 public class UndirectedGraph<T> extends Graph<T> {
     @Override
-    protected boolean addNode(Node<T> node) {
-        updateAdjacencyLists(node);
-        nodeList.add(node);
+    protected boolean addNode(GraphNode<T> graphNode) {
+        updateAdjacencyLists(graphNode);
+        nodeList.add(graphNode);
         return true;
     }
 
     @Override
-    protected boolean removeNode(Node<T> node) {
-        T data = node.getData();
+    protected boolean removeNode(GraphNode<T> graphNode) {
+        T data = graphNode.getData();
         int index = 0;
 
         for(int i = 0; i < nodeList.size(); i++) {
-            Node<T> currentNode = nodeList.get(i);
-            LinkedList<T> adjacencyList = currentNode.getAdjacencyList();
+            GraphNode<T> currentGraphNode = nodeList.get(i);
+            LinkedList<T> adjacencyList = currentGraphNode.getAdjacencyList();
 
-            if (currentNode.data == data) index = i;
+            if (currentGraphNode.data == data) index = i;
             if(adjacencyList.contains(data)) adjacencyList.remove(data);
         }
 
@@ -43,10 +43,10 @@ public class UndirectedGraph<T> extends Graph<T> {
         arrayList.add(firstData);
 
         while (!stack.isEmpty()) {
-            Node<T> node = searchNodeByData(stack.pop());
+            GraphNode<T> graphNode = searchNodeByData(stack.pop());
 
-            callback.action(node);
-            LinkedList<T> adjacencyList = node.getAdjacencyList();
+            callback.action(graphNode);
+            LinkedList<T> adjacencyList = graphNode.getAdjacencyList();
 
             for(int i = 0; i < adjacencyList.size(); i++) {
                 T data = adjacencyList.get(i);
@@ -69,10 +69,10 @@ public class UndirectedGraph<T> extends Graph<T> {
         arrayList.add(firstData);
 
         while (!queue.isEmpty()) {
-            Node<T> node = searchNodeByData(queue.dequeue());
+            GraphNode<T> graphNode = searchNodeByData(queue.dequeue());
 
-            callback.action(node);
-            LinkedList<T> adjacencyList = node.getAdjacencyList();
+            callback.action(graphNode);
+            LinkedList<T> adjacencyList = graphNode.getAdjacencyList();
 
             for(int i = 0; i < adjacencyList.size(); i++) {
                 T data = adjacencyList.get(i);
@@ -84,9 +84,9 @@ public class UndirectedGraph<T> extends Graph<T> {
         }
     }
 
-    private void updateAdjacencyLists(Node<T> node) {
-        LinkedList<T> adjacencyList = node.getAdjacencyList();
-        T data = node.getData();
+    private void updateAdjacencyLists(GraphNode<T> graphNode) {
+        LinkedList<T> adjacencyList = graphNode.getAdjacencyList();
+        T data = graphNode.getData();
 
         for(int i = 0; i < adjacencyList.size(); i++) {
             try {

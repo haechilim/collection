@@ -2,10 +2,10 @@ package kr.hs.sunrint.graph;
 
 import kr.hs.sunrint.list.LinkedList;
 
-public class WeightedNode<T> extends Node<T> {
+public class WeightedGraphNode<T> extends GraphNode<T> {
     private LinkedList<Integer> weightList;
 
-    public WeightedNode(T data, LinkedList<T> adjacencyList, LinkedList<Integer> weightList) {
+    public WeightedGraphNode(T data, LinkedList<T> adjacencyList, LinkedList<Integer> weightList) {
         super(data, adjacencyList);
         this.weightList = weightList == null ? new LinkedList<>() : weightList;
     }

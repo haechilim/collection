@@ -1,17 +1,17 @@
 package kr.hs.sunrint.tree;
 
-public class Node<T> {
+public class TreeNode<T> {
     private T data;
     private int key;
-    private Node<T> left = null;
-    private Node<T> right = null;
-    private Node<T> parent = null;
+    private TreeNode<T> left = null;
+    private TreeNode<T> right = null;
+    private TreeNode<T> parent = null;
 
-    public Node(T data) {
+    public TreeNode(T data) {
         this.data = data;
     }
 
-    public Node(T data, int key) {
+    public TreeNode(T data, int key) {
         this.data = data;
         this.key = key;
     }
@@ -32,27 +32,27 @@ public class Node<T> {
         this.key = key;
     }
 
-    public Node<T> getLeft() {
+    public TreeNode<T> getLeft() {
         return left;
     }
 
-    public void setLeft(Node<T> left) {
+    public void setLeft(TreeNode<T> left) {
         this.left = left;
     }
 
-    public Node<T> getRight() {
+    public TreeNode<T> getRight() {
         return right;
     }
 
-    public void setRight(Node<T> right) {
+    public void setRight(TreeNode<T> right) {
         this.right = right;
     }
 
-    public Node<T> getParent() {
+    public TreeNode<T> getParent() {
         return parent;
     }
 
-    public void setParent(Node<T> parent) {
+    public void setParent(TreeNode<T> parent) {
         this.parent = parent;
     }
 

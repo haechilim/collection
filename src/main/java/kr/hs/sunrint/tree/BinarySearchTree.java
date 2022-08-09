@@ -4,30 +4,30 @@ import kr.hs.sunrint.exception.DuplicatedTreeKeyException;
 import kr.hs.sunrint.exception.NotExistElementException;
 
 public class BinarySearchTree<T> extends BinaryTree<T> {
-    public BinarySearchTree(Node<T> rootNode) {
-        super(rootNode);
+    public BinarySearchTree(TreeNode<T> rootTreeNode) {
+        super(rootTreeNode);
     }
 
-    public boolean insertNode(Node node) throws DuplicatedTreeKeyException {
-        Node<T> current = getRootNode();
+    public boolean insertNode(TreeNode treeNode) throws DuplicatedTreeKeyException {
+        TreeNode<T> current = getRootTreeNode();
 
         while (true) {
-            Node<T> leftNode = current.getLeft();
-            Node<T> rightNode = current.getRight();
+            TreeNode<T> leftTreeNode = current.getLeft();
+            TreeNode<T> rightTreeNode = current.getRight();
 
-            if(node.getKey() < current.getKey()) {
-                if(leftNode == null) {
-                    insertLeftNode(current, node);
+            if(treeNode.getKey() < current.getKey()) {
+                if(leftTreeNode == null) {
+                    insertLeftNode(current, treeNode);
                     break;
                 }
-                else current = leftNode;
+                else current = leftTreeNode;
             }
-            else if(node.getKey() > current.getKey()) {
-                if(rightNode == null) {
-                    insertRightNode(current, node);
+            else if(treeNode.getKey() > current.getKey()) {
+                if(rightTreeNode == null) {
+                    insertRightNode(current, treeNode);
                     break;
                 }
-                else current = rightNode;
+                else current = rightTreeNode;
             }
             else throw new DuplicatedTreeKeyException();
         }
@@ -36,39 +36,39 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
     }
 
     public boolean removeNode(int key) {
-        Node<T> node = searchNode(key);
-        Node<T> leftNode = node.getLeft();
-        Node<T> rightNode = node.getRight();
+        TreeNode<T> treeNode = searchNode(key);
+        TreeNode<T> leftTreeNode = treeNode.getLeft();
+        TreeNode<T> rightTreeNode = treeNode.getRight();
 
-        if(leftNode != null && rightNode != null) {
-            Node<T> current = rightNode;
+        if(leftTreeNode != null && rightTreeNode != null) {
+            TreeNode<T> current = rightTreeNode;
 
             while (true) {
-                Node<T> left = current.getLeft();
-                Node<T> right = current.getRight();
+                TreeNode<T> left = current.getLeft();
+                TreeNode<T> right = current.getRight();
 
                 if(left != null) current = left;
                 else {
                     if (right != null) {
-                        if(current == rightNode) current.getParent().setRight(right);
+                        if(current == rightTreeNode) current.getParent().setRight(right);
                         else current.getParent().setLeft(right);
                     }
 
-                    Node<T> parentNode = node.getParent();
+                    TreeNode<T> parentTreeNode = treeNode.getParent();
 
-                    if(parentNode == null) {
-                        if(leftNode != current) current.setLeft(leftNode);
-                        if(rightNode != current) current.setRight(rightNode);
-                        rootNode = current;
+                    if(parentTreeNode == null) {
+                        if(leftTreeNode != current) current.setLeft(leftTreeNode);
+                        if(rightTreeNode != current) current.setRight(rightTreeNode);
+                        rootTreeNode = current;
                     }
                     else {
-                        if(node == parentNode.getLeft()) {
-                            parentNode.setLeft(current);
-                            current.setRight(rightNode);
+                        if(treeNode == parentTreeNode.getLeft()) {
+                            parentTreeNode.setLeft(current);
+                            current.setRight(rightTreeNode);
                         }
                         else {
-                            parentNode.setRight(current);
-                            current.setLeft(leftNode);
+                            parentTreeNode.setRight(current);
+                            current.setLeft(leftTreeNode);
                         }
                     }
 
@@ -76,14 +76,14 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
                 }
             }
         }
-        else if(leftNode != null || rightNode != null) {
-            Node<T> parentNode = node.getParent();
-            Node<T> childNode = leftNode != null ? leftNode : rightNode;
+        else if(leftTreeNode != null || rightTreeNode != null) {
+            TreeNode<T> parentTreeNode = treeNode.getParent();
+            TreeNode<T> childTreeNode = leftTreeNode != null ? leftTreeNode : rightTreeNode;
 
-            if(parentNode == null) rootNode = childNode;
+            if(parentTreeNode == null) rootTreeNode = childTreeNode;
             else {
-                if(node == parentNode.getLeft()) parentNode.setLeft(childNode);
-                else parentNode.setRight(childNode);
+                if(treeNode == parentTreeNode.getLeft()) parentTreeNode.setLeft(childTreeNode);
+                else parentTreeNode.setRight(childTreeNode);
             }
         }
         else remove(key);
@@ -91,8 +91,8 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         return true;
     }
 
-    public Node searchNode(int key) throws NotExistElementException {
-        Node<T> current = getRootNode();
+    public TreeNode searchNode(int key) throws NotExistElementException {
+        TreeNode<T> current = getRootTreeNode();
 
         while (true) {
             if(key < current.getKey()) current = current.getLeft();
@@ -103,16 +103,16 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         }
     }
 
-    public Node<T> getLeftNode(Node parent) {
+    public TreeNode<T> getLeftNode(TreeNode parent) {
         return super.getLeftNode(parent);
     }
 
-    public Node<T> getRightNode(Node parent) {
+    public TreeNode<T> getRightNode(TreeNode parent) {
         return super.getRightNode(parent);
     }
 
-    public Node<T> getRootNode() {
-        return super.getRootNode();
+    public TreeNode<T> getRootTreeNode() {
+        return super.getRootTreeNode();
     }
 
     @Override
@@ -136,28 +136,28 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
     }
 
     private void remove(int key) {
-        Node<T> current = getRootNode();
-        Node<T> leftNode;
-        Node<T> rightNode;
+        TreeNode<T> current = getRootTreeNode();
+        TreeNode<T> leftTreeNode;
+        TreeNode<T> rightTreeNode;
 
         while (true) {
-            leftNode = current.getLeft();
-            rightNode = current.getRight();
+            leftTreeNode = current.getLeft();
+            rightTreeNode = current.getRight();
 
-            if(leftNode != null && key == leftNode.getKey()) {
+            if(leftTreeNode != null && key == leftTreeNode.getKey()) {
                 current.setLeft(null);
                 return;
             }
-            else if(rightNode != null && key == rightNode.getKey()) {
+            else if(rightTreeNode != null && key == rightTreeNode.getKey()) {
                 current.setRight(null);
                 return;
             }
             else if(key < current.getKey()) {
-                if(leftNode != null) current = leftNode;
+                if(leftTreeNode != null) current = leftTreeNode;
                 else throw new NotExistElementException();
             }
             else if(key > current.getKey()) {
-                if(rightNode != null) current = rightNode;
+                if(rightTreeNode != null) current = rightTreeNode;
                 else throw new NotExistElementException();
             }
         }

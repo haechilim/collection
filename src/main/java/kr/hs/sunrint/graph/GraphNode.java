@@ -2,11 +2,11 @@ package kr.hs.sunrint.graph;
 
 import kr.hs.sunrint.list.LinkedList;
 
-public class Node<T> {
+public class GraphNode<T> {
     protected T data;
     protected LinkedList<T> adjacencyList;
 
-    public Node(T data, LinkedList<T> adjacencyList) {
+    public GraphNode(T data, LinkedList<T> adjacencyList) {
         this.data = data;
         this.adjacencyList = adjacencyList == null ? new LinkedList<>() : adjacencyList;
     }

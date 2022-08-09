@@ -11,31 +11,31 @@ public class BinaryTreeTest {
 
     @BeforeEach
     public void setup() {
-        Node<String> root = new Node<>("A");
-        Node<String> nodeB = new Node<>("B");
-        Node<String> nodeC = new Node<>("C");
-        Node<String> nodeD = new Node<>("D");
-        Node<String> nodeE = new Node<>("E");
-        Node<String> nodeF = new Node<>("F");
-        Node<String> nodeG = new Node<>("G");
+        TreeNode<String> root = new TreeNode<>("A");
+        TreeNode<String> treeNodeB = new TreeNode<>("B");
+        TreeNode<String> treeNodeC = new TreeNode<>("C");
+        TreeNode<String> treeNodeD = new TreeNode<>("D");
+        TreeNode<String> treeNodeE = new TreeNode<>("E");
+        TreeNode<String> treeNodeF = new TreeNode<>("F");
+        TreeNode<String> treeNodeG = new TreeNode<>("G");
 
         binaryTree = new BinaryTree<>(root);
 
-        binaryTree.insertLeftNode(root, nodeB);
-        binaryTree.insertRightNode(root, nodeC);
-        binaryTree.insertLeftNode(nodeB, nodeD);
-        binaryTree.insertRightNode(nodeB, nodeE);
-        binaryTree.insertLeftNode(nodeE, nodeF);
-        binaryTree.insertRightNode(nodeE, nodeG);
+        binaryTree.insertLeftNode(root, treeNodeB);
+        binaryTree.insertRightNode(root, treeNodeC);
+        binaryTree.insertLeftNode(treeNodeB, treeNodeD);
+        binaryTree.insertRightNode(treeNodeB, treeNodeE);
+        binaryTree.insertLeftNode(treeNodeE, treeNodeF);
+        binaryTree.insertRightNode(treeNodeE, treeNodeG);
     }
 
     @Test
     public void 삽입된_노드의_부모_노드_확인() {
-        Node<String> rootNode = binaryTree.getRootNode();
-        Node<String> node = rootNode.getLeft();
+        TreeNode<String> rootTreeNode = binaryTree.getRootTreeNode();
+        TreeNode<String> treeNode = rootTreeNode.getLeft();
 
-        assertEquals(rootNode.getParent(), null);
-        assertEquals(node.getParent(), rootNode);
+        assertEquals(rootTreeNode.getParent(), null);
+        assertEquals(treeNode.getParent(), rootTreeNode);
     }
 
     @Test
@@ -72,8 +72,8 @@ public class BinaryTreeTest {
         assertEquals("A B C D E F G", buffer.toString());
     }
 
-    private void addText(Node<String> node) {
+    private void addText(TreeNode<String> treeNode) {
         if(buffer.length() > 0) buffer.append(" ");
-        buffer.append(node.getData());
+        buffer.append(treeNode.getData());
     }
 }
