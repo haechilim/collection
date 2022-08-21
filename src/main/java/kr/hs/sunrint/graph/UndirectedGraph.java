@@ -11,6 +11,7 @@ public class UndirectedGraph<T> extends Graph<T> {
     protected boolean addNode(GraphNode<T> graphNode) {
         updateAdjacencyLists(graphNode);
         nodeList.add(graphNode);
+        size++;
         return true;
     }
 
@@ -28,6 +29,8 @@ public class UndirectedGraph<T> extends Graph<T> {
         }
 
         nodeList.remove(index);
+
+        size--;
 
         return true;
     }

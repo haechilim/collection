@@ -3,11 +3,12 @@ package kr.hs.sunrint.list;
 import kr.hs.sunrint.exception.IndexOutOfBoundException;
 import kr.hs.sunrint.exception.NotExistElementException;
 
-public class LinkedList<E> {
+public class LinkedList<E> extends List<E> {
     private Node<E> head;
     private Node<E> tail;
     private int size = 0;
 
+    @Override
     public boolean add(E element) {
         Node<E> node = new Node(element);
 
@@ -20,6 +21,7 @@ public class LinkedList<E> {
         return true;
     }
 
+    @Override
     public boolean add(int index, E element) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
@@ -58,6 +60,7 @@ public class LinkedList<E> {
         return remove(size - 1);
     }
 
+    @Override
     public E remove(int index) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
@@ -74,6 +77,7 @@ public class LinkedList<E> {
         return node.data;
     }
 
+    @Override
     public boolean remove(E element) {
         try {
             int index = getIndexByElement(element);
@@ -86,6 +90,7 @@ public class LinkedList<E> {
         return true;
     }
 
+    @Override
     public E set(int index, E element) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
@@ -96,26 +101,31 @@ public class LinkedList<E> {
         return node.data;
     }
 
+    @Override
     public E get(int index) {
         Node<E> node = search(index);
 
         return node.data;
     }
 
+    @Override
     public void clear() {
         head = null;
         tail = null;
         size = 0;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size <= 0;
     }
 
+    @Override
     public boolean contains(E element) {
         try {
             getIndexByElement(element);
@@ -126,6 +136,7 @@ public class LinkedList<E> {
         return true;
     }
 
+    @Override
     public int indexOf(E element) throws NotExistElementException {
         try {
             return getIndexByElement(element);

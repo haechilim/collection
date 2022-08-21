@@ -180,6 +180,23 @@ public class WeightedGraphTest {
         assertEquals("1 3 2 4 5 6", buffer.toString());
     }
 
+    @Test
+    public void 크루스칼_알고리즘_테스트() {
+        buffer = new StringBuffer();
+
+        LinkedList<String> adjacencyList6 = new LinkedList<>();
+        adjacencyList6.add("1");
+        adjacencyList6.add("3");
+        adjacencyList6.add("4");
+        LinkedList<Integer> weightList6 = new LinkedList<>();
+        weightList6.add(10);
+        weightList6.add(25);
+        weightList6.add(23);
+        weightedGraph.addNode(new WeightedGraphNode<>("6", adjacencyList6, weightList6));
+
+        assertEquals("0 1 5 6 2 4 3", weightedGraph.kruskal().traverse());
+    }
+
     private void addTextTree(TreeNode<String> treeNode) {
         if(buffer.length() > 0) buffer.append(" ");
         buffer.append(treeNode.getData());

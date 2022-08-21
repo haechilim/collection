@@ -4,6 +4,8 @@ import kr.hs.sunrint.exception.NotExistElementException;
 import kr.hs.sunrint.list.ArrayList;
 import kr.hs.sunrint.list.LinkedList;
 import kr.hs.sunrint.tree.BinaryTree;
+import kr.hs.sunrint.tree.MinimumSpanningTree;
+import kr.hs.sunrint.tree.PairNode;
 import kr.hs.sunrint.tree.TreeNode;
 
 public class WeightedGraph<T> extends UndirectedGraph<T> {
@@ -79,6 +81,73 @@ public class WeightedGraph<T> extends UndirectedGraph<T> {
         }
 
         return binaryTree;
+    }
+
+    public MinimumSpanningTree<T> kruskal() {
+        ArrayList<PairNode<T>> pairNodes = getPairNodes();
+        ArrayList<PairNode<T>> usedNodes = new ArrayList<>();
+        usedWeights = new ArrayList<>();
+
+        while (usedNodes.size() < size - 1) {
+            PairNode<T> node = getPairNodesMinWeight(pairNodes, usedNodes);
+
+            usedNodes.add(node);
+        }
+
+        return new MinimumSpanningTree<>(usedNodes);
+    }
+
+    private ArrayList<PairNode<T>> getPairNodes() {
+        ArrayList<PairNode<T>> pairNodes = new ArrayList<>();
+
+        depthFirstSearch(visit -> {
+            WeightedGraphNode<T> node = (WeightedGraphNode<T>) visit;
+            LinkedList<T> adjacencyList = node.getAdjacencyList();
+            LinkedList<Integer> weightList = node.getWeightList();
+
+            for(int i = 0; i < adjacencyList.size(); i++) {
+                if(containsWeight(pairNodes, weightList.get(i))) continue;
+
+                pairNodes.add(new PairNode<T>(node, (WeightedGraphNode<T>) searchNodeByData(adjacencyList.get(i)), weightList.get(i)));
+            }
+        });
+
+        return pairNodes;
+    }
+
+    private boolean containsWeight(ArrayList<PairNode<T>> pairNodes, int weight) {
+        for(int i = 0; i < pairNodes.size(); i++) {
+            if(pairNodes.get(i).getWeight() == weight) return true;
+        }
+
+        return false;
+    }
+
+    private boolean containsNodes(ArrayList<PairNode<T>> pairNodes, WeightedGraphNode<T> weightedGraphNode) {
+        for(int i = 0; i < pairNodes.size(); i++) {
+            PairNode<T> pairNode = pairNodes.get(i);
+            if(pairNode.getNode1().data == weightedGraphNode.data || pairNode.getNode2().data == weightedGraphNode.data) return true;
+        }
+
+        return false;
+    }
+
+    private PairNode<T> getPairNodesMinWeight(ArrayList<PairNode<T>> pairNodes, ArrayList<PairNode<T>> usedNodes) {
+        PairNode<T> minPairNode = pairNodes.get(0);
+
+        for(int i = 0; i < pairNodes.size(); i++) {
+            PairNode<T> pairNode = pairNodes.get(i);
+
+            if(usedWeights.contains(pairNode.getWeight())) continue;
+            if(containsNodes(usedNodes, pairNode.getNode1()) && containsNodes(usedNodes, pairNode.getNode2())) continue;
+
+            if(pairNode.getWeight() < minPairNode.getWeight()) {
+                minPairNode = pairNode;
+                usedWeights.add(pairNode.getWeight());
+            }
+        }
+
+        return minPairNode;
     }
 
     private void init() {

@@ -4,6 +4,7 @@ import kr.hs.sunrint.exception.NotExistElementException;
 import kr.hs.sunrint.list.ArrayList;
 
 public abstract class Graph<T> {
+    protected int size = 0;
     protected ArrayList<GraphNode<T>> nodeList = new ArrayList<>();
 
     protected abstract boolean addNode(GraphNode<T> graphNode);

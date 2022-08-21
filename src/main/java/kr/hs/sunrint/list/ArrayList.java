@@ -4,7 +4,7 @@ import kr.hs.sunrint.exception.IndexOutOfBoundException;
 
 import java.util.Arrays;
 
-public class ArrayList<E> {
+public class ArrayList<E> extends List<E> {
     private Object[] data;
     private int current = 0;
     private int initialSize = 1024;
@@ -23,6 +23,7 @@ public class ArrayList<E> {
         data = new Object[initialSize];
     }
 
+    @Override
     public boolean add(E element) {
         if(needsExtend()) extend();
 
@@ -31,6 +32,7 @@ public class ArrayList<E> {
         return true;
     }
 
+    @Override
     public boolean add(int index, E element) throws IndexOutOfBoundException {
         if(index >= current) throw new IndexOutOfBoundException();
 
@@ -52,8 +54,11 @@ public class ArrayList<E> {
         return true;
     }
 
-    public boolean remove(int index) throws IndexOutOfBoundsException {
+    @Override
+    public E remove(int index) throws IndexOutOfBoundException {
         if(index >= current) throw new IndexOutOfBoundsException();
+
+        E result = (E) data[index];
 
         for(int i = index; i < current; i++ ) {
             data[i] = i + 1 < current ? data[i + 1] : null;
@@ -61,17 +66,22 @@ public class ArrayList<E> {
 
         current--;
 
-        return true;
+        return result;
     }
 
+    @Override
     public boolean remove(E element) {
         for(int i = 0; i < current; i++) {
-            if(data[i] == element) return remove(i);
+            if(data[i] == element) {
+                remove(i);
+                return true;
+            }
         }
 
         return false;
     }
 
+    @Override
     public E set(int index, E element) throws IndexOutOfBoundsException {
         if(index >= current) throw new IndexOutOfBoundsException();
 
@@ -80,21 +90,25 @@ public class ArrayList<E> {
         return element;
     }
 
+    @Override
     public E get(int index) throws IndexOutOfBoundsException {
         if(index >= current) throw new IndexOutOfBoundsException();
 
         return (E)data[index];
     }
 
+    @Override
     public void clear() {
         data = new String[0];
         current = 0;
     }
 
+    @Override
     public int size() {
         return current;
     }
 
+    @Override
     public boolean contains(E element) {
         for(int i = 0; i < current; i++) {
             if(data[i] == element) return true;
@@ -103,6 +117,7 @@ public class ArrayList<E> {
         return false;
     }
 
+    @Override
     public int indexOf(E element) {
         for(int i = 0; i < current; i++) {
             if(data[i] == element) return i;
@@ -111,6 +126,7 @@ public class ArrayList<E> {
         return -1;
     }
 
+    @Override
     public boolean isEmpty() {
         return size() <= 0;
     }
