@@ -2,16 +2,15 @@ package kr.hs.sunrint.list;
 
 import kr.hs.sunrint.exception.IndexOutOfBoundException;
 import kr.hs.sunrint.exception.NotExistElementException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
 
 public class LinkedListTest {
     LinkedList<String> list;
 
-    @BeforeEach
+    @Before
     public void setup() {
         list = new LinkedList();
 
@@ -41,7 +40,7 @@ public class LinkedListTest {
 
     @Test
     public void 요소를_가장_앞에_추가한다() {
-        list.addFirst("xyz");
+        list.add(0, "xyz");
 
         assertEquals("xyz", list.get(0));
         assertEquals("abc", list.get(1));
@@ -49,9 +48,9 @@ public class LinkedListTest {
         assertEquals("ghi", list.get(3));
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundException.class)
     public void 엾는_인덱스에_추가_하려고_하면_예외를_던진다() {
-        assertThrows(IndexOutOfBoundException.class, () -> list.add(3, "cat"));
+        list.add(3, "cat");
     }
 
     @Test
@@ -73,7 +72,7 @@ public class LinkedListTest {
 
     @Test
     public void 처음_요소를_삭제한다() {
-        list.removeFirst();
+        list.remove(0);
 
         assertEquals("def", list.get(0));
         assertEquals("ghi", list.get(1));
@@ -102,9 +101,9 @@ public class LinkedListTest {
         assertEquals(false, list.contains("cat"));
     }
 
-    @Test
+    @Test(expected = NotExistElementException.class)
     public void 요소가_어디에_있는지_체크() {
         assertEquals(2, list.indexOf("ghi"));
-        assertThrows(NotExistElementException.class, () -> list.indexOf("cat"));
+        list.indexOf("cat");
     }
 }

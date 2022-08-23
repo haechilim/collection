@@ -13,7 +13,10 @@ public class LinkedList<E> extends List<E> {
         Node<E> node = new Node(element);
 
         if(isEmpty()) head = node;
-        else tail.next = node;
+        else {
+            tail.next = node;
+            node.previous = tail;
+        }
 
         tail = node;
         size++;
@@ -23,37 +26,32 @@ public class LinkedList<E> extends List<E> {
 
     @Override
     public boolean add(int index, E element) throws IndexOutOfBoundException {
+        if(isEmpty()) return add(element);
+
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node<E> node = new Node(element, search(index));
+        Node<E> next = search(index);
+        Node<E> previous = next.previous;
 
-        try {
-            Node<E> preNode = search(index - 1);
-            preNode.next = node;
-        }
-        catch (IndexOutOfBoundException e) {
-            head = node;
-        }
+        insert(new Node<E>(element), previous, next);
 
         size++;
 
         return true;
     }
 
-    public boolean addFirst(E element) {
-        try {
-            if(size == 0) add(element);
-            else add(0, element);
-        } catch (IndexOutOfBoundException e) {
-            e.printStackTrace();
-            return false;
+    private void insert(Node<E> element, Node<E> previous, Node<E> next) {
+        if(previous == null) head = element;
+        else {
+            previous.next = element;
+            element.previous = previous;
         }
 
-        return true;
-    }
-
-    public E removeFirst() {
-        return remove(0);
+        if(next == null) tail = element;
+        else {
+            element.next = next;
+            next.previous = element;
+        }
     }
 
     public E removeLast() {
@@ -64,13 +62,19 @@ public class LinkedList<E> extends List<E> {
     public E remove(int index) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node<E> preNode = index - 1 < 0 ? null : search(index - 1);
-        Node<E> nextNode = index + 1 >= size ? null : search(index + 1);
         Node<E> node = search(index);
+        Node<E> preNode = node.previous == null ? null : node.previous;
+        Node<E> nextNode = node.next == null ? null : node.next;
 
         if(preNode == null) head = nextNode;
-        else if(nextNode == null) preNode.next =  tail;
-        else preNode.next = nextNode;
+        else if(nextNode == null) {
+            preNode.next = null;
+            tail = preNode;
+        }
+        else {
+            preNode.next = nextNode;
+            nextNode.previous = preNode;
+        }
 
         size--;
 
@@ -156,13 +160,22 @@ public class LinkedList<E> extends List<E> {
         throw new NotExistElementException();
     }
 
-    private Node search(int index) throws IndexOutOfBoundException {
+    private Node<E> search(int index) throws IndexOutOfBoundException {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
-        Node<E> current = head;
+        boolean reverse = index > size / 2;
 
-        for(int i = 0; i < index; i++) {
-            current = current.next;
+        Node<E> current = reverse ? tail : head;
+
+        if(!reverse) {
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+        }
+        else {
+            for (int i = size - 1; i > index; i--) {
+                current = current.previous;
+            }
         }
 
         return current;
@@ -170,15 +183,20 @@ public class LinkedList<E> extends List<E> {
 
     private class Node<E> {
         private E data;
+        private Node previous;
         private Node next;
 
         public Node(E data) {
             this.data = data;
         }
 
-        public Node(E data, Node next) {
-            this.data = data;
-            this.next = next;
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "data=" + data +
+                    ", previous=" + previous +
+                    ", next=" + next +
+                    '}';
         }
     }
 }

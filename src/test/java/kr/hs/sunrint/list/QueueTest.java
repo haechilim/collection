@@ -1,16 +1,15 @@
 package kr.hs.sunrint.list;
 
 import kr.hs.sunrint.exception.NotExistElementException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
 
 public class QueueTest {
     private Queue<String> queue;
 
-    @BeforeEach
+    @Before
     public void setup() {
         queue = new Queue<>();
 
@@ -20,12 +19,12 @@ public class QueueTest {
         queue.enqueue("D");
     }
 
-    @Test
+    @Test(expected = NotExistElementException.class)
     public void 큐에서_데이터_dequeue() {
         assertEquals("A", queue.dequeue());
         assertEquals("B", queue.dequeue());
         assertEquals("C", queue.dequeue());
         assertEquals("D", queue.dequeue());
-        assertThrows(NotExistElementException.class, () -> queue.dequeue());
+        queue.dequeue();
     }
 }

@@ -8,6 +8,7 @@ public class ArrayList<E> extends List<E> {
     private Object[] data;
     private int current = 0;
     private int initialSize = 1024;
+    private int increaseRate = 2;
 
     public ArrayList() {
         init();
@@ -15,6 +16,13 @@ public class ArrayList<E> extends List<E> {
 
     public ArrayList(int initialSize) {
         this.initialSize = initialSize;
+
+        init();
+    }
+
+    public ArrayList(int initialSize, int increaseRate) {
+        this.initialSize = initialSize;
+        this.increaseRate = increaseRate;
 
         init();
     }
@@ -34,7 +42,9 @@ public class ArrayList<E> extends List<E> {
 
     @Override
     public boolean add(int index, E element) throws IndexOutOfBoundException {
-        if(index >= current) throw new IndexOutOfBoundException();
+        if(needsExtend()) extend();
+
+        if(index > current) throw new IndexOutOfBoundException();
 
         Object[] temp = new Object[current];
 
@@ -137,7 +147,7 @@ public class ArrayList<E> extends List<E> {
 
     private void extend() {
         Object[] temp = data;
-        data = new String[current * 2];
+        data = new Object[current * increaseRate];
 
         copyData(temp);
     }

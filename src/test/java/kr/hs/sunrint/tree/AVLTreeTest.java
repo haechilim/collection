@@ -1,15 +1,15 @@
 package kr.hs.sunrint.tree;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class AVLTreeTest {
     private AVLTree<String> avlTree;
     private StringBuffer buffer;
 
-    @BeforeEach
+    @Before
     public void setup() {
         buffer = new StringBuffer();
     }

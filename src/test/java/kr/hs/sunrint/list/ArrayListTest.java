@@ -2,16 +2,15 @@ package kr.hs.sunrint.list;
 
 
 import kr.hs.sunrint.exception.IndexOutOfBoundException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
 
 public class ArrayListTest {
     private ArrayList<String> list;
 
-    @BeforeEach
+    @Before
     public void setup() {
         list = new ArrayList<>();
 
@@ -35,9 +34,9 @@ public class ArrayListTest {
         assertEquals("def", list.get(2));
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundException.class)
     public void 엾는_인덱스에_추가_하려고_하면_예외를_던진다() {
-        assertThrows(IndexOutOfBoundException.class, () -> list.add(4, "cat"));
+        list.add(4, "cat");
     }
 
     @Test

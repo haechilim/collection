@@ -1,16 +1,15 @@
 package kr.hs.sunrint.list;
 
 import kr.hs.sunrint.exception.NotExistElementException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
 
 public class StackTest {
     private Stack<String> stack;
 
-    @BeforeEach
+    @Before
     public void setup() {
         stack = new Stack<>();
 
@@ -19,11 +18,11 @@ public class StackTest {
         stack.push("C");
     }
 
-    @Test
+    @Test(expected = NotExistElementException.class)
     public void 스택에서_데이터_pop() {
         assertEquals("C", stack.pop());
         assertEquals("B", stack.pop());
         assertEquals("A", stack.pop());
-        assertThrows(NotExistElementException.class, () -> stack.pop());
+        stack.pop();
     }
 }

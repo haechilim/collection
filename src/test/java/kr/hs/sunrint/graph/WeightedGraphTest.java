@@ -2,16 +2,16 @@ package kr.hs.sunrint.graph;
 
 import kr.hs.sunrint.list.LinkedList;
 import kr.hs.sunrint.tree.TreeNode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class WeightedGraphTest {
     private WeightedGraph<String> weightedGraph;
     private StringBuffer buffer;
 
-    @BeforeEach
+    @Before
     public void setup() {
         weightedGraph = new WeightedGraph<>();
 

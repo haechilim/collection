@@ -1,15 +1,15 @@
 package kr.hs.sunrint.tree;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class BinaryTreeTest {
     private BinaryTree<String> binaryTree;
     private StringBuffer buffer;
 
-    @BeforeEach
+    @Before
     public void setup() {
         TreeNode<String> root = new TreeNode<>("A");
         TreeNode<String> treeNodeB = new TreeNode<>("B");
