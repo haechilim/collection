@@ -1,46 +1,62 @@
 package kr.hs.sunrint.tree;
 
+import kr.hs.sunrint.exception.DuplicatedTreeKeyException;
+
 public class AVLTree<T> extends BinarySearchTree<T> {
     public AVLTree(TreeNode<T> rootTreeNode) {
         super(rootTreeNode);
     }
 
+    @Override
+    public boolean insertNode(TreeNode treeNode) throws DuplicatedTreeKeyException {
+        if(super.insertNode(treeNode)) {
+            calculateBalanceFactor(treeNode);
+            //balanceTree();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void calculateBalanceFactor(TreeNode treeNode) {
+        while (treeNode != null) {
+            TreeNode<T> left = treeNode.getLeft();
+            TreeNode<T> right = treeNode.getRight();
+
+            int leftHeight = left != null ? left.getHeight() : 0;
+            int rightHeight = right != null ? right.getHeight() : 0;
+
+            treeNode.setHeight(Math.max(leftHeight + 1, rightHeight + 1));
+            treeNode.setBalanceFactor(leftHeight - rightHeight);
+
+            treeNode = treeNode.getParent();
+        }
+    }
+
+    /*private TreeNode<T> findBiasNode(TreeNode<T> treeNode) {
+        TreeNode<T> parent = treeNode.getParent();
+
+        while (parent != null) {
+            if(parent.getBalanceFactor() > 1 || parent.getBalanceFactor() < -1) return parent;
+
+            parent = parent.getParent();
+        }
+
+        return null;
+    }*/
+
     public void balanceTree() {
-        traverseLevel(visit -> balanceTree(visit));
-    }
-
-    public int getBalanceFactor(TreeNode<T> treeNode) {
-        return getHeight(treeNode.getLeft()) - getHeight(treeNode.getRight());
-    }
-
-    public int getHeight(TreeNode<T> treeNode) {
-        if(treeNode == null) return 0;
-        if(treeNode.getLeft() == null && treeNode.getRight() == null) return 1;
-
-        int leftHeight = getHeight(treeNode.getLeft());
-        int rightHeight = getHeight(treeNode.getRight());
-        int height = Math.max(leftHeight, rightHeight);
-
-        return ++height;
-    }
-
-    public void balanceTree(TreeNode<T> treeNode) {
-        int bf = getBalanceFactor(treeNode);
-
-        if( bf >= -1 && bf <= 1) return;
+        TreeNode<T> treeNode = getRootTreeNode();
+        int bf = treeNode.getBalanceFactor();
 
         if(bf > 1) {
             TreeNode<T> leftTreeNode = treeNode.getLeft();
-
-            if(getBalanceFactor(leftTreeNode) < 0) leftRotate(leftTreeNode);
-
+            if(leftTreeNode.getBalanceFactor() < 0) leftRotate(leftTreeNode);
             rightRotate(treeNode);
         }
         else if(bf < -1) {
             TreeNode<T> rightTreeNode = treeNode.getRight();
-
-            if(getBalanceFactor(rightTreeNode) > 0) rightRotate(rightTreeNode);
-
+            if(rightTreeNode.getBalanceFactor() > 0) rightRotate(rightTreeNode);
             leftRotate(treeNode);
         }
     }
@@ -52,10 +68,13 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         leftTreeNode.setParent(parent);
         leftTreeNode.setRight(treeNode);
+        treeNode.setParent(leftTreeNode);
         treeNode.setLeft(temp);
 
         if(parent == null) rootTreeNode = leftTreeNode;
         else parent.setRight(leftTreeNode);
+
+        calculateBalanceFactor(treeNode);
     }
 
     private void leftRotate(TreeNode<T> treeNode) {
@@ -65,9 +84,12 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         rightTreeNode.setParent(parent);
         rightTreeNode.setLeft(treeNode);
+        treeNode.setParent(rightTreeNode);
         treeNode.setRight(temp);
 
         if(parent == null) rootTreeNode = rightTreeNode;
         else parent.setLeft(rightTreeNode);
+
+        calculateBalanceFactor(treeNode);
     }
 }

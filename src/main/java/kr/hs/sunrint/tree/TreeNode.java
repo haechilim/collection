@@ -3,6 +3,8 @@ package kr.hs.sunrint.tree;
 public class TreeNode<T> {
     private T data;
     private int key;
+    private int height = 0;
+    private int balanceFactor = 0;
     private TreeNode<T> left = null;
     private TreeNode<T> right = null;
     private TreeNode<T> parent = null;
@@ -30,6 +32,22 @@ public class TreeNode<T> {
 
     public void setKey(int key) {
         this.key = key;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getBalanceFactor() {
+        return balanceFactor;
+    }
+
+    public void setBalanceFactor(int balanceFactor) {
+        this.balanceFactor = balanceFactor;
     }
 
     public TreeNode<T> getLeft() {

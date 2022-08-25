@@ -7,7 +7,11 @@ import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.*;
 
-public class PerformanceTest {
+import java.util.Random;
+
+public class MainPerformanceTest {
+    private Random random = new Random();
+
     @Rule
     public ContiPerfRule contiPerfRule = new ContiPerfRule();
 
@@ -54,25 +58,33 @@ public class PerformanceTest {
 
     @Test
     @Ignore
-    @PerfTest(invocations = 10)
-    @Required(median = 3)
-    public void LinkedList_가장_앞에_데이터_삽입() {
-        LinkedList<Integer> list = new LinkedList<>();
+    @PerfTest(invocations = 1)
+    @Required(median = 1700)
+    public void ArrayList_랜덤한_위치에_데이터_삽입() {
+        ArrayList<Integer> list = new ArrayList<>(1024, 20);
+
+        list.add(50001);
 
         for (int i = 0; i < 50000; i++) {
-            list.add(0, i);
+            int index = random.nextInt(list.size());
+
+            list.add(index, i);
         }
     }
 
     @Test
     @Ignore
-    @PerfTest(invocations = 10)
-    @Required(median = 1400)
-    public void ArrayList_가장_앞에_데이터_삽입() {
-        ArrayList<Integer> list = new ArrayList<>(1024, 20);
+    @PerfTest(invocations = 1)
+    @Required(median = 3000)
+    public void LinkedList_랜덤한_위치에_데이터_삽입() {
+        LinkedList<Integer> list = new LinkedList<>();
+
+        list.add(50001);
 
         for (int i = 0; i < 50000; i++) {
-            list.add(0, i);
+            int index = random.nextInt(list.size());
+
+            list.add(index, i);
         }
     }
 }

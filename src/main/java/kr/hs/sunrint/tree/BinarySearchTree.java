@@ -99,7 +99,9 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
             else if(key > current.getKey()) current = current.getRight();
             else return current;
 
-            if(current == null) throw new NotExistElementException();
+            if(current == null) {
+                throw new NotExistElementException();
+            }
         }
     }
 

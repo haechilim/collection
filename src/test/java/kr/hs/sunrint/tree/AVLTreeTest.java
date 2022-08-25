@@ -26,10 +26,10 @@ public class AVLTreeTest {
         avlTree.insertNode(new TreeNode<>("34", 34));
         avlTree.insertNode(new TreeNode<>("65", 65));
 
-        assertEquals(1, avlTree.getBalanceFactor(avlTree.searchNode(70)));
-        assertEquals(0, avlTree.getBalanceFactor(avlTree.searchNode(50)));
-        assertEquals(-1, avlTree.getBalanceFactor(avlTree.searchNode(60)));
-        assertEquals(0, avlTree.getBalanceFactor(avlTree.searchNode(34)));
+        assertEquals(1, avlTree.searchNode(70).getBalanceFactor());
+        assertEquals(0, avlTree.searchNode(50).getBalanceFactor());
+        assertEquals(-1, avlTree.searchNode(60).getBalanceFactor());
+        assertEquals(0, avlTree.searchNode(34).getBalanceFactor());
 
 //        assertEquals(3, this.avlTree.getBalanceFactor(this.avlTree.searchNode(9)));
 //        assertEquals(4, this.avlTree.getBalanceFactor(this.avlTree.searchNode(10)));
@@ -54,7 +54,6 @@ public class AVLTreeTest {
         avlTree.insertNode(new TreeNode<>("36", 36));
         avlTree.insertNode(new TreeNode<>("38", 38));
 
-        avlTree.balanceTree();
         avlTree.traverseLevel(visit -> addText(visit));
         assertEquals("40 35 50 33 37 45 60 32 34 36 38 42 47 55 65", buffer.toString());
     }
@@ -78,7 +77,6 @@ public class AVLTreeTest {
         avlTree.insertNode(new TreeNode<>("66", 66));
         avlTree.insertNode(new TreeNode<>("68", 68));
 
-        avlTree.balanceTree();
         avlTree.traverseLevel(visit -> addText(visit));
         assertEquals("60 50 65 40 55 63 67 35 45 54 56 62 64 66 68", buffer.toString());
     }
@@ -102,7 +100,6 @@ public class AVLTreeTest {
         avlTree.insertNode(new TreeNode<>("44", 44));
         avlTree.insertNode(new TreeNode<>("46", 46));
 
-        avlTree.balanceTree();
         avlTree.traverseLevel(visit -> addText(visit));
         assertEquals("40 30 50 20 35 45 60 15 25 34 36 44 46 55 65", buffer.toString());
     }
