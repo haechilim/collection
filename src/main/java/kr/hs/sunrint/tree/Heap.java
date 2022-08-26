@@ -10,13 +10,13 @@ public abstract class Heap<T> extends BinaryTree {
         this.desc = desc;
     }
 
-    protected boolean insertNode(TreeNode<T> treeNode) {
+    public boolean insertNode(TreeNode<T> treeNode) {
         appendLeafNode(treeNode);
         swapUntilOk(treeNode);
         return true;
     }
 
-    protected TreeNode<T> removeRootNode() {
+    public TreeNode<T> removeRootNode() {
         TreeNode<T> root = rootTreeNode;
 
         replaceRootNode();

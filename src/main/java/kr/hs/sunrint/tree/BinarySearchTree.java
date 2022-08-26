@@ -35,60 +35,63 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         return true;
     }
 
-    public boolean removeNode(int key) {
-        TreeNode<T> treeNode = searchNode(key);
-        TreeNode<T> leftTreeNode = treeNode.getLeft();
-        TreeNode<T> rightTreeNode = treeNode.getRight();
+    private TreeNode<T> findSmallestNode(TreeNode<T> node) {
+        TreeNode<T> current = node;
 
-        if(leftTreeNode != null && rightTreeNode != null) {
-            TreeNode<T> current = rightTreeNode;
-
-            while (true) {
-                TreeNode<T> left = current.getLeft();
-                TreeNode<T> right = current.getRight();
-
-                if(left != null) current = left;
-                else {
-                    if (right != null) {
-                        if(current == rightTreeNode) current.getParent().setRight(right);
-                        else current.getParent().setLeft(right);
-                    }
-
-                    TreeNode<T> parentTreeNode = treeNode.getParent();
-
-                    if(parentTreeNode == null) {
-                        if(leftTreeNode != current) current.setLeft(leftTreeNode);
-                        if(rightTreeNode != current) current.setRight(rightTreeNode);
-                        rootTreeNode = current;
-                    }
-                    else {
-                        if(treeNode == parentTreeNode.getLeft()) {
-                            parentTreeNode.setLeft(current);
-                            current.setRight(rightTreeNode);
-                        }
-                        else {
-                            parentTreeNode.setRight(current);
-                            current.setLeft(leftTreeNode);
-                        }
-                    }
-
-                    break;
-                }
-            }
+        while (current != null) {
+            TreeNode<T> left = current.getLeft();
+            if(left == null) break;
+            current = left;
         }
-        else if(leftTreeNode != null || rightTreeNode != null) {
-            TreeNode<T> parentTreeNode = treeNode.getParent();
-            TreeNode<T> childTreeNode = leftTreeNode != null ? leftTreeNode : rightTreeNode;
+
+        return current;
+    }
+
+    public boolean removeNode(int key) {
+        return removeNodeByKey(key) != null;
+    }
+
+    protected TreeNode<T> removeNodeByKey(int key) {
+        TreeNode<T> targetNode = searchNode(key);
+        TreeNode<T> leftNode = targetNode.getLeft();
+        TreeNode<T> rightNode = targetNode.getRight();
+        TreeNode<T> updatedNode = null;
+
+        if(leftNode != null && rightNode != null) {
+            TreeNode<T> parentNode = targetNode.getParent();
+            TreeNode<T> smallestNode = findSmallestNode(rightNode);
+            updatedNode = smallestNode;
+
+            if(smallestNode.getRight() != null && isLeftChild(smallestNode)) {
+                setLeftNode(smallestNode.getParent(), smallestNode.getRight());
+                updatedNode = smallestNode.getRight();
+            }
+
+            if(parentNode == null) rootTreeNode = smallestNode;
+            else {
+                if(isLeftChild(targetNode)) setLeftNode(parentNode, smallestNode);
+                else setRightNode(parentNode, smallestNode);
+            }
+
+            if(leftNode != smallestNode) setLeftNode(smallestNode, leftNode);
+            if(rightNode != smallestNode) setRightNode(smallestNode, rightNode);
+        }
+        else if(leftNode != null || rightNode != null) {
+            TreeNode<T> parentTreeNode = targetNode.getParent();
+            TreeNode<T> childTreeNode = leftNode != null ? leftNode : rightNode;
 
             if(parentTreeNode == null) rootTreeNode = childTreeNode;
             else {
-                if(treeNode == parentTreeNode.getLeft()) parentTreeNode.setLeft(childTreeNode);
-                else parentTreeNode.setRight(childTreeNode);
+                if(targetNode == parentTreeNode.getLeft()) setLeftNode(parentTreeNode, childTreeNode);
+                else setRightNode(parentTreeNode, childTreeNode);
             }
         }
-        else remove(key);
+        else {
+            if(isLeftChild(targetNode)) targetNode.getParent().setLeft(null);
+            else targetNode.getParent().setRight(null);
+        }
 
-        return true;
+        return updatedNode;
     }
 
     public TreeNode searchNode(int key) throws NotExistElementException {
@@ -137,31 +140,9 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         super.traverseLevel(callback);
     }
 
-    private void remove(int key) {
-        TreeNode<T> current = getRootTreeNode();
-        TreeNode<T> leftTreeNode;
-        TreeNode<T> rightTreeNode;
-
-        while (true) {
-            leftTreeNode = current.getLeft();
-            rightTreeNode = current.getRight();
-
-            if(leftTreeNode != null && key == leftTreeNode.getKey()) {
-                current.setLeft(null);
-                return;
-            }
-            else if(rightTreeNode != null && key == rightTreeNode.getKey()) {
-                current.setRight(null);
-                return;
-            }
-            else if(key < current.getKey()) {
-                if(leftTreeNode != null) current = leftTreeNode;
-                else throw new NotExistElementException();
-            }
-            else if(key > current.getKey()) {
-                if(rightTreeNode != null) current = rightTreeNode;
-                else throw new NotExistElementException();
-            }
-        }
+    private boolean isLeftChild(TreeNode<T> treeNode) {
+        TreeNode<T> parent = treeNode.getParent();
+        if(parent == null) throw new IllegalStateException();
+        return parent.getLeft() == treeNode;
     }
 }

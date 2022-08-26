@@ -12,15 +12,23 @@ public class BinaryTree<T> {
     }
 
     public boolean insertLeftNode(TreeNode parent, TreeNode treeNode) {
-        treeNode.setParent(parent);
-        parent.setLeft(treeNode);
+        setLeftNode(parent, treeNode);
         return true;
     }
 
     public boolean insertRightNode(TreeNode parent, TreeNode treeNode) {
-        treeNode.setParent(parent);
-        parent.setRight(treeNode);
+        setRightNode(parent, treeNode);
         return true;
+    }
+
+    protected void setLeftNode(TreeNode<T> parent , TreeNode<T> node) {
+        parent.setLeft(node);
+        node.setParent(parent);
+    }
+
+    protected void setRightNode(TreeNode<T> parent , TreeNode<T> node) {
+        parent.setRight(node);
+        node.setParent(parent);
     }
 
     public TreeNode<T> getLeftNode(TreeNode parent) {

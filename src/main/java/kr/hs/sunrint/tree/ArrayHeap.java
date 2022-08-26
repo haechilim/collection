@@ -22,7 +22,7 @@ public class ArrayHeap<T> extends Heap<T> {
             int index = arrayList.indexOf(treeNode);
             TreeNode<T> parent = arrayList.get(index / 2);
 
-            if(parent == null) continue;
+            if(parent == null) break;
 
             if((desc && parent.getKey() < treeNode.getKey()) || (!desc && parent.getKey() > treeNode.getKey())) {
                 arrayList.set(index, parent);
@@ -38,8 +38,11 @@ public class ArrayHeap<T> extends Heap<T> {
 
         TreeNode<T> data = arrayList.get(arrayList.size() - 1);
         arrayList.remove(arrayList.size() - 1);
-        arrayList.set(1, data);
-        rootTreeNode = data;
+        if(arrayList.size() > 1) {
+            arrayList.set(1, data);
+            rootTreeNode = data;
+        }
+        else rootTreeNode = null;
     }
 
     @Override

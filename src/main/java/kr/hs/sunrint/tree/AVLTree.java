@@ -18,6 +18,14 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         return false;
     }
 
+    @Override
+    public boolean removeNode(int key) {
+        calculateBalanceFactor(removeNodeByKey(key));
+        balanceTree();
+
+        return true;
+    }
+
     private void calculateBalanceFactor(TreeNode treeNode) {
         while (treeNode != null) {
             TreeNode<T> left = treeNode.getLeft();
@@ -32,18 +40,6 @@ public class AVLTree<T> extends BinarySearchTree<T> {
             treeNode = treeNode.getParent();
         }
     }
-
-    /*private TreeNode<T> findBiasNode(TreeNode<T> treeNode) {
-        TreeNode<T> parent = treeNode.getParent();
-
-        while (parent != null) {
-            if(parent.getBalanceFactor() > 1 || parent.getBalanceFactor() < -1) return parent;
-
-            parent = parent.getParent();
-        }
-
-        return null;
-    }*/
 
     public void balanceTree() {
         TreeNode<T> treeNode = getRootTreeNode();

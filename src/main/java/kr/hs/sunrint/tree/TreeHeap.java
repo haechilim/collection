@@ -3,70 +3,47 @@ package kr.hs.sunrint.tree;
 public class TreeHeap<T> extends Heap<T> {
     private boolean inserted;
     private boolean find;
-    private TreeNode<T> lastTreeNode;
+    private TreeNode<T> lastNode;
 
     public TreeHeap(TreeNode rootTreeNode, boolean desc) {
         super(rootTreeNode, desc);
     }
 
     @Override
-    protected void appendLeafNode(TreeNode<T> treeNode) {
+    protected void appendLeafNode(TreeNode<T> node) {
         inserted = false;
 
         traverseLevel(parent -> {
             if(inserted) return;
 
-            if(parent.getLeft() == null) parent.setLeft(treeNode);
-            else if(parent.getRight() == null) parent.setRight(treeNode);
+            if(parent.getLeft() == null) parent.setLeft(node);
+            else if(parent.getRight() == null) parent.setRight(node);
             else return;
 
-            treeNode.setParent(parent);
+            node.setParent(parent);
 
             inserted = true;
         });
     }
 
     @Override
-    protected void swapUntilOk(TreeNode<T> treeNode) {
-        TreeNode<T> parent = treeNode.getParent();
+    protected void swapUntilOk(TreeNode<T> node) {
+        TreeNode<T> parent = node.getParent();
 
         if(parent == null) return;
 
-        while ((desc && parent.getKey() < treeNode.getKey()) || (!desc && parent.getKey() > treeNode.getKey())) {
-            swap(parent, treeNode);
-            parent = treeNode.getParent();
+        while ((desc && parent.getKey() < node.getKey()) || (!desc && parent.getKey() > node.getKey())) {
+            swap(parent, node);
+            if(parent.getLeft() == null && parent.getRight() == null) lastNode = parent;
 
+            parent = node.getParent();
             if(parent == null) return;
         }
     }
 
     @Override
     public void replaceRootNode() {
-        find = false;
-
-        traverseLevel(visit -> {
-            lastTreeNode = visit;
-            TreeNode<T> treeNode = null;
-
-            if(find) return;
-
-            if(visit.getLeft() != null && visit.getRight() != null) return;
-            else if(visit.getLeft() == null) {
-                treeNode = lastTreeNode.getRight();
-                lastTreeNode.setRight(null);
-            }
-            else if(visit.getRight() == null) {
-                treeNode = visit.getLeft();
-                visit.setLeft(null);
-            }
-
-            find = true;
-
-            treeNode.setParent(null);
-            treeNode.setLeft(rootTreeNode.getLeft());
-            treeNode.setRight(rootTreeNode.getRight());
-            rootTreeNode = treeNode;
-        });
+        rootTreeNode = lastNode;
     }
 
     @Override
