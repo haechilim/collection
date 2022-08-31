@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class TreePerformanceTest {
+    private static final int NODE_COUNT = 1000000;
+    
     private AVLTree<Integer> avlTree;
     private BinarySearchTree<Integer> binarySearchTree;
     private List<Integer> samples;
@@ -31,13 +33,15 @@ public class TreePerformanceTest {
     public TreePerformanceTest() {
         samples = new ArrayList<>();
 
-        for(int i = 0; i < 1000000; i++) {
+        System.out.println("-- begin --");
+
+        for(int i = 0; i < NODE_COUNT; i++) {
             samples.add(i);
         }
 
         Collections.shuffle(samples);
 
-        for(int i = 0; i < 1000000; i++) {
+        for(int i = 0; i < NODE_COUNT; i++) {
             int data = samples.get(i);
 
             if (i == 0) {
@@ -51,13 +55,15 @@ public class TreePerformanceTest {
                 avlTree.balanceTree();
             }
         }
+
+        System.out.println("-- end --");
     }
 
     @Test
     @PerfTest(invocations = 1)
     @Required(median = 2000)
     public void BinarySearchTree_데이터_삽입() {
-        for(int i = 0; i < 1000000; i++) {
+        for(int i = 0; i < NODE_COUNT; i++) {
             int data = samples.get(i);
 
             if (i == 0) binarySearchTree = new BinarySearchTree<>(new TreeNode(data, data));
@@ -71,7 +77,7 @@ public class TreePerformanceTest {
     @PerfTest(invocations = 1)
     @Required(median = 2000)
     public void AVLTree_데이터_삽입() {
-        for(int i = 0; i < 1000000; i++) {
+        for(int i = 0; i < NODE_COUNT; i++) {
             int data = samples.get(i);
 
             if (i == 0) avlTree = new AVLTree<>(new TreeNode(data, data));
@@ -87,25 +93,27 @@ public class TreePerformanceTest {
     @PerfTest(invocations = 1)
     @Required(median = 100000)
     public void BinarySearchTree_데이터_삭제() {
-        for(int i = 0; i < 1000000; i++) {
-            binarySearchTree.removeNode(samples.get(i));
+        for(int i = 0; i < NODE_COUNT; i++) {
+            binarySearchTree.removeNode(i);
         }
+
+        System.out.println(binarySearchTree.getRootTreeNode());
     }
 
-    /*@Test
+    @Test
     @PerfTest(invocations = 1)
     @Required(median = 100000)
     public void AVLTree_데이터_삭제() {
-        for(int i = 0; i < 8; i++) {
-            avlTree.removeNode(samples.get(i));
+        for(int i = 0; i < NODE_COUNT; i++) {
+            avlTree.removeNode(i);
         }
-    }*/
+    }
 
     @Test
     @PerfTest(invocations = 1)
     @Required(median = 2000)
     public void BinarySearchTree_데이터_찾기() {
-        for(int i = 0; i < 1000000; i++) {
+        for(int i = 0; i < NODE_COUNT; i++) {
             binarySearchTree.searchNode(samples.get(i));
         }
 
@@ -116,7 +124,7 @@ public class TreePerformanceTest {
     @PerfTest(invocations = 1)
     @Required(median = 2000)
     public void AVLTree_데이터_찾기() {
-    for(int i = 0; i < 1000000; i++) {
+    for(int i = 0; i < NODE_COUNT; i++) {
             avlTree.searchNode(samples.get(i));
         }
 

@@ -21,6 +21,11 @@ public class BinaryTree<T> {
         return true;
     }
 
+    protected void setRootNode(TreeNode<T> node) {
+        rootTreeNode = node;
+        node.setParent(null);
+    }
+
     protected void setLeftNode(TreeNode<T> parent , TreeNode<T> node) {
         parent.setLeft(node);
         node.setParent(parent);

@@ -53,12 +53,13 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
 
     protected TreeNode<T> removeNodeByKey(int key) {
         TreeNode<T> targetNode = searchNode(key);
+        TreeNode<T> parentNode = targetNode.getParent();
         TreeNode<T> leftNode = targetNode.getLeft();
         TreeNode<T> rightNode = targetNode.getRight();
         TreeNode<T> updatedNode = null;
 
         if(leftNode != null && rightNode != null) {
-            TreeNode<T> parentNode = targetNode.getParent();
+
             TreeNode<T> smallestNode = findSmallestNode(rightNode);
             updatedNode = smallestNode;
 
@@ -67,7 +68,7 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
                 updatedNode = smallestNode.getRight();
             }
 
-            if(parentNode == null) rootTreeNode = smallestNode;
+            if(parentNode == null) setRootNode(smallestNode);
             else {
                 if(isLeftChild(targetNode)) setLeftNode(parentNode, smallestNode);
                 else setRightNode(parentNode, smallestNode);
@@ -77,18 +78,20 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
             if(rightNode != smallestNode) setRightNode(smallestNode, rightNode);
         }
         else if(leftNode != null || rightNode != null) {
-            TreeNode<T> parentTreeNode = targetNode.getParent();
-            TreeNode<T> childTreeNode = leftNode != null ? leftNode : rightNode;
+            TreeNode<T> childNode = leftNode != null ? leftNode : rightNode;
 
-            if(parentTreeNode == null) rootTreeNode = childTreeNode;
+            if(parentNode == null) setRootNode(childNode);
             else {
-                if(targetNode == parentTreeNode.getLeft()) setLeftNode(parentTreeNode, childTreeNode);
-                else setRightNode(parentTreeNode, childTreeNode);
+                if(isLeftChild(targetNode)) setLeftNode(parentNode, childNode);
+                else setRightNode(parentNode, childNode);
             }
         }
         else {
-            if(isLeftChild(targetNode)) targetNode.getParent().setLeft(null);
-            else targetNode.getParent().setRight(null);
+            if(parentNode != null) {
+                if(isLeftChild(targetNode)) parentNode.setLeft(null);
+                else parentNode.setRight(null);
+            }
+            else rootTreeNode = null;
         }
 
         return updatedNode;
