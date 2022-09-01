@@ -50,9 +50,8 @@ public class TreePerformanceTest {
             }
             else {
                 binarySearchTree.insertNode(new TreeNode(data, data));
-
                 avlTree.insertNode(new TreeNode(data, data));
-                avlTree.balanceTree();
+                //avlTree.balanceTree();
             }
         }
 
@@ -114,7 +113,7 @@ public class TreePerformanceTest {
     @Required(median = 2000)
     public void BinarySearchTree_데이터_찾기() {
         for(int i = 0; i < NODE_COUNT; i++) {
-            binarySearchTree.searchNode(samples.get(i));
+            binarySearchTree.searchNode(i);
         }
 
         System.out.println(binarySearchTree.getRootTreeNode().getBalanceFactor());
@@ -125,7 +124,7 @@ public class TreePerformanceTest {
     @Required(median = 2000)
     public void AVLTree_데이터_찾기() {
     for(int i = 0; i < NODE_COUNT; i++) {
-            avlTree.searchNode(samples.get(i));
+            avlTree.searchNode(i);
         }
 
         System.out.println(avlTree.getRootTreeNode().getBalanceFactor());

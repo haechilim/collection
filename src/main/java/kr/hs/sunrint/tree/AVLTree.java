@@ -42,50 +42,52 @@ public class AVLTree<T> extends BinarySearchTree<T> {
     }
 
     public void balanceTree() {
-        TreeNode<T> treeNode = getRootTreeNode();
-        int bf = treeNode.getBalanceFactor();
+        TreeNode<T> node = getRootTreeNode();
+        int bf = node.getBalanceFactor();
 
         if(bf > 1) {
-            TreeNode<T> leftTreeNode = treeNode.getLeft();
-            if(leftTreeNode.getBalanceFactor() < 0) leftRotate(leftTreeNode);
-            rightRotate(treeNode);
+            TreeNode<T> leftNode = node.getLeft();
+            if(leftNode.getBalanceFactor() < 0) leftRotate(leftNode);
+            rightRotate(node);
         }
         else if(bf < -1) {
-            TreeNode<T> rightTreeNode = treeNode.getRight();
-            if(rightTreeNode.getBalanceFactor() > 0) rightRotate(rightTreeNode);
-            leftRotate(treeNode);
+            TreeNode<T> rightNode = node.getRight();
+            if(rightNode.getBalanceFactor() > 0) rightRotate(rightNode);
+            leftRotate(node);
         }
     }
 
-    private void rightRotate(TreeNode<T> treeNode) {
-        TreeNode<T> parent = treeNode.getParent();
-        TreeNode<T> leftTreeNode = treeNode.getLeft();
-        TreeNode<T> temp = leftTreeNode.getRight();
+    private void rightRotate(TreeNode<T> node) {
+        TreeNode<T> parent = node.getParent();
+        TreeNode<T> leftNode = node.getLeft();
+        TreeNode<T> temp = leftNode.getRight();
 
-        leftTreeNode.setParent(parent);
-        leftTreeNode.setRight(treeNode);
-        treeNode.setParent(leftTreeNode);
-        treeNode.setLeft(temp);
+        if(parent == null) setRootNode(leftNode);
+        else {
+            if(isLeftChild(node)) setLeftNode(parent, leftNode);
+            else setRightNode(parent, leftNode);
+        }
 
-        if(parent == null) rootTreeNode = leftTreeNode;
-        else parent.setRight(leftTreeNode);
+        setRightNode(leftNode, node);
+        if(temp != null) setLeftNode(node, temp);
 
-        calculateBalanceFactor(treeNode);
+        calculateBalanceFactor(node);
     }
 
-    private void leftRotate(TreeNode<T> treeNode) {
-        TreeNode<T> parent = treeNode.getParent();
-        TreeNode<T> rightTreeNode = treeNode.getRight();
-        TreeNode<T> temp = rightTreeNode.getLeft();
+    private void leftRotate(TreeNode<T> node) {
+        TreeNode<T> parent = node.getParent();
+        TreeNode<T> rightNode = node.getRight();
+        TreeNode<T> temp = rightNode.getLeft();
 
-        rightTreeNode.setParent(parent);
-        rightTreeNode.setLeft(treeNode);
-        treeNode.setParent(rightTreeNode);
-        treeNode.setRight(temp);
+        if(parent == null) setRootNode(rightNode);
+        else {
+            if(isLeftChild(node)) setLeftNode(parent, rightNode);
+            else setRightNode(parent, rightNode);
+        }
 
-        if(parent == null) rootTreeNode = rightTreeNode;
-        else parent.setLeft(rightTreeNode);
+        setLeftNode(rightNode, node);
+        if(temp != null) setRightNode(node, temp);
 
-        calculateBalanceFactor(treeNode);
+        calculateBalanceFactor(node);
     }
 }

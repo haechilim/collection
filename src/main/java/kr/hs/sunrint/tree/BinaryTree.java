@@ -36,6 +36,12 @@ public class BinaryTree<T> {
         node.setParent(parent);
     }
 
+    protected boolean isLeftChild(TreeNode<T> treeNode) {
+        TreeNode<T> parent = treeNode.getParent();
+        if(parent == null) throw new IllegalStateException();
+        return parent.getLeft() == treeNode;
+    }
+
     public TreeNode<T> getLeftNode(TreeNode parent) {
         return parent.getLeft();
     }

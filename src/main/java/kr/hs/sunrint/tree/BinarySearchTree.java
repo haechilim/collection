@@ -105,9 +105,7 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
             else if(key > current.getKey()) current = current.getRight();
             else return current;
 
-            if(current == null) {
-                throw new NotExistElementException();
-            }
+            if(current == null) throw new NotExistElementException();
         }
     }
 
@@ -141,11 +139,5 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
     @Override
     public void traverseLevel(VisitCallback callback) {
         super.traverseLevel(callback);
-    }
-
-    private boolean isLeftChild(TreeNode<T> treeNode) {
-        TreeNode<T> parent = treeNode.getParent();
-        if(parent == null) throw new IllegalStateException();
-        return parent.getLeft() == treeNode;
     }
 }
