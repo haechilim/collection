@@ -10,34 +10,34 @@ public abstract class Heap<T> extends BinaryTree {
         this.desc = desc;
     }
 
-    public boolean insertNode(TreeNode<T> treeNode) {
-        appendLeafNode(treeNode);
-        swapUntilOk(treeNode);
+    public boolean insertNode(TreeNode<T> node) {
+        appendLeafNode(node);
+        swapUntilOk(node);
         return true;
     }
 
     public TreeNode<T> removeRootNode() {
-        TreeNode<T> root = rootTreeNode;
+        TreeNode<T> root = rootNode;
 
         replaceRootNode();
-        swapUntilOkRemove(rootTreeNode);
+        swapUntilOkRemove();
 
         return root;
     }
 
-    protected abstract void appendLeafNode(TreeNode<T> treeNode);
-    protected abstract void swapUntilOk(TreeNode<T> treeNode);
+    protected abstract void appendLeafNode(TreeNode<T> node);
+    protected abstract void swapUntilOk(TreeNode<T> node);
     protected abstract void replaceRootNode();
-    protected abstract void swapUntilOkRemove(TreeNode<T> treeNode);
-    protected abstract TreeNode<T> getParent(TreeNode<T> treeNode);
+    protected abstract void swapUntilOkRemove();
+    protected abstract TreeNode<T> getParent(TreeNode<T> node);
 
     @Override
-    public boolean insertLeftNode(TreeNode parent, TreeNode treeNode) throws NotSupportedException {
+    public boolean insertLeftNode(TreeNode parent, TreeNode node) throws NotSupportedException {
         throw new NotSupportedException();
     }
 
     @Override
-    public boolean insertRightNode(TreeNode parent, TreeNode treeNode) throws NotSupportedException {
+    public boolean insertRightNode(TreeNode parent, TreeNode node) throws NotSupportedException {
         throw new NotSupportedException();
     }
 }

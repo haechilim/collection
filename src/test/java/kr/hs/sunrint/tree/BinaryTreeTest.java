@@ -31,7 +31,7 @@ public class BinaryTreeTest {
 
     @Test
     public void 삽입된_노드의_부모_노드_확인() {
-        TreeNode<String> rootTreeNode = binaryTree.getRootTreeNode();
+        TreeNode<String> rootTreeNode = binaryTree.getRootNode();
         TreeNode<String> treeNode = rootTreeNode.getLeft();
 
         assertEquals(rootTreeNode.getParent(), null);

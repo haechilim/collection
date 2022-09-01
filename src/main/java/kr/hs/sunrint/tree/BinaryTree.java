@@ -5,10 +5,10 @@ import kr.hs.sunrint.list.Queue;
 import kr.hs.sunrint.list.Stack;
 
 public class BinaryTree<T> {
-    protected TreeNode<T> rootTreeNode;
+    protected TreeNode<T> rootNode;
 
-    public BinaryTree(TreeNode<T> rootTreeNode) {
-        this.rootTreeNode = rootTreeNode;
+    public BinaryTree(TreeNode<T> rootNode) {
+        this.rootNode = rootNode;
     }
 
     public boolean insertLeftNode(TreeNode parent, TreeNode treeNode) {
@@ -22,18 +22,18 @@ public class BinaryTree<T> {
     }
 
     protected void setRootNode(TreeNode<T> node) {
-        rootTreeNode = node;
+        rootNode = node;
         node.setParent(null);
     }
 
     protected void setLeftNode(TreeNode<T> parent , TreeNode<T> node) {
         parent.setLeft(node);
-        node.setParent(parent);
+        if(node != null) node.setParent(parent);
     }
 
     protected void setRightNode(TreeNode<T> parent , TreeNode<T> node) {
         parent.setRight(node);
-        node.setParent(parent);
+        if(node != null) node.setParent(parent);
     }
 
     protected boolean isLeftChild(TreeNode<T> treeNode) {
@@ -50,18 +50,18 @@ public class BinaryTree<T> {
         return parent.getRight();
     }
 
-    public TreeNode<T> getRootTreeNode() {
-        return rootTreeNode;
+    public TreeNode<T> getRootNode() {
+        return rootNode;
     }
 
     public void traversePreorderRecursively(VisitCallback callback) {
-        preorderRecursively(rootTreeNode, callback);
+        preorderRecursively(rootNode, callback);
     }
 
     public void traversePreorder(VisitCallback callback) {
         Stack<TreeNode<T>> stack = new Stack<>();
 
-        stack.push(rootTreeNode);
+        stack.push(rootNode);
 
         while (!stack.isEmpty()) {
             TreeNode<T> treeNode = stack.pop();
@@ -76,14 +76,14 @@ public class BinaryTree<T> {
     }
 
     public void traverseInorderRecursively(VisitCallback callback) {
-        inorderRecursively(rootTreeNode, callback);
+        inorderRecursively(rootNode, callback);
     }
 
     public void traverseInorder(VisitCallback callback) {
         ArrayList<TreeNode<T>> visitedNodes = new ArrayList<>();
         Stack<TreeNode<T>> stack = new Stack<>();
 
-        TreeNode<T> treeNode = rootTreeNode;
+        TreeNode<T> treeNode = rootNode;
 
         while(true) {
             for(TreeNode<T> left = treeNode; left != null; left = left.getLeft()) {
@@ -104,14 +104,14 @@ public class BinaryTree<T> {
     }
 
     public void traversePostorderRecursively(VisitCallback callback) {
-        postorderRecursively(rootTreeNode, callback);
+        postorderRecursively(rootNode, callback);
     }
 
     public void traversePostorder(VisitCallback callback) {
         ArrayList<TreeNode<T>> visitedNodes = new ArrayList<>();
         Stack<TreeNode<T>> stack = new Stack<>();
 
-        stack.push(rootTreeNode);
+        stack.push(rootNode);
 
         while (!stack.isEmpty()) {
             TreeNode<T> treeNode = stack.pop();
@@ -132,7 +132,7 @@ public class BinaryTree<T> {
 
     public void traverseLevel(VisitCallback callback) {
         Queue<TreeNode<T>> queue = new Queue<>();
-        queue.enqueue(rootTreeNode);
+        queue.enqueue(rootNode);
 
         while (!queue.isEmpty()) {
             TreeNode<T> treeNode = queue.dequeue();

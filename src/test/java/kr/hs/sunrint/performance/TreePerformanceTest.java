@@ -7,13 +7,14 @@ import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.*;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TreePerformanceTest {
-    private static final int NODE_COUNT = 1000000;
+    private static final int NODE_COUNT = 500000;
     
     private AVLTree<Integer> avlTree;
     private BinarySearchTree<Integer> binarySearchTree;
@@ -41,7 +42,7 @@ public class TreePerformanceTest {
 
         Collections.shuffle(samples);
 
-        for(int i = 0; i < NODE_COUNT; i++) {
+        /*for(int i = 0; i < NODE_COUNT; i++) {
             int data = samples.get(i);
 
             if (i == 0) {
@@ -51,9 +52,8 @@ public class TreePerformanceTest {
             else {
                 binarySearchTree.insertNode(new TreeNode(data, data));
                 avlTree.insertNode(new TreeNode(data, data));
-                //avlTree.balanceTree();
             }
-        }
+        }*/
 
         System.out.println("-- end --");
     }
@@ -69,7 +69,7 @@ public class TreePerformanceTest {
             else binarySearchTree.insertNode(new TreeNode(data, data));
         }
 
-        System.out.println(binarySearchTree.getRootTreeNode().getBalanceFactor());
+        System.out.println(binarySearchTree.getRootNode().getBalanceFactor());
     }
 
     @Test
@@ -79,13 +79,14 @@ public class TreePerformanceTest {
         for(int i = 0; i < NODE_COUNT; i++) {
             int data = samples.get(i);
 
-            if (i == 0) avlTree = new AVLTree<>(new TreeNode(data, data));
-            else avlTree.insertNode(new TreeNode(data, data));
+            TreeNode node = new TreeNode(data, data);
+            if (i == 0) avlTree = new AVLTree<>(node);
+            else avlTree.insertNode(node);
 
-            avlTree.balanceTree();
+            avlTree.balanceTree(node);
         }
 
-        System.out.println(avlTree.getRootTreeNode().getBalanceFactor());
+        System.out.println(avlTree.getRootNode().getBalanceFactor());
     }
 
     @Test
@@ -96,7 +97,7 @@ public class TreePerformanceTest {
             binarySearchTree.removeNode(i);
         }
 
-        System.out.println(binarySearchTree.getRootTreeNode());
+        System.out.println(binarySearchTree.getRootNode());
     }
 
     @Test
@@ -116,7 +117,7 @@ public class TreePerformanceTest {
             binarySearchTree.searchNode(i);
         }
 
-        System.out.println(binarySearchTree.getRootTreeNode().getBalanceFactor());
+        System.out.println(binarySearchTree.getRootNode().getBalanceFactor());
     }
 
     @Test
@@ -127,6 +128,46 @@ public class TreePerformanceTest {
             avlTree.searchNode(i);
         }
 
-        System.out.println(avlTree.getRootTreeNode().getBalanceFactor());
+        System.out.println(avlTree.getRootNode().getBalanceFactor());
+    }
+
+    @Test
+    public void BinarySearchTree_vs_AVLTree() {
+        StopWatch stopWatch = new StopWatch("이진탐색트리 vs AVL 트리");
+
+        stopWatch.start("이진탐색트리 삽입");
+        for(int i = 0; i < NODE_COUNT; i++) {
+            int data = samples.get(i);
+
+            if (i == 0) binarySearchTree = new BinarySearchTree<>(new TreeNode(data, data));
+            else binarySearchTree.insertNode(new TreeNode(data, data));
+        }
+        System.out.println("이진탐색트리 BF: " + binarySearchTree.getRootNode().getBalanceFactor());
+        stopWatch.stop();
+
+        stopWatch.start("이진탐색트리 검색");
+        for(int i = 0; i < NODE_COUNT; i++) {
+            binarySearchTree.searchNode(samples.get(i));
+        }
+        stopWatch.stop();
+
+        stopWatch.start("AVL 트리 삽입");
+        for(int i = 0; i < NODE_COUNT; i++) {
+            int data = samples.get(i);
+
+            if (i == 0) avlTree = new AVLTree<>(new TreeNode(data, data));
+            else avlTree.insertNode(new TreeNode(data, data));
+        }
+        System.out.println("AVL 트리 BF: " + avlTree.getRootNode().getBalanceFactor());
+        System.out.println();
+        stopWatch.stop();
+
+        stopWatch.start("AVL 트리 검색");
+        for(int i = 0; i < NODE_COUNT; i++) {
+            avlTree.searchNode(samples.get(i));
+        }
+        stopWatch.stop();
+
+        System.out.println(stopWatch.prettyPrint());
     }
 }

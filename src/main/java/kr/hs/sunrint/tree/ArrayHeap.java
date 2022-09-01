@@ -1,5 +1,6 @@
 package kr.hs.sunrint.tree;
 
+import kr.hs.sunrint.exception.NotSupportedException;
 import kr.hs.sunrint.list.ArrayList;
 
 public class ArrayHeap<T> extends Heap<T> {
@@ -12,21 +13,23 @@ public class ArrayHeap<T> extends Heap<T> {
     }
 
     @Override
-    protected void appendLeafNode(TreeNode<T> treeNode) {
-        arrayList.add(treeNode);
+    protected void appendLeafNode(TreeNode<T> node) {
+        arrayList.add(node);
     }
 
     @Override
-    protected void swapUntilOk(TreeNode<T> treeNode) {
+    protected void swapUntilOk(TreeNode<T> node) {
+        int index = arrayList.size() - 1;
+
         while (true) {
-            int index = arrayList.indexOf(treeNode);
             TreeNode<T> parent = arrayList.get(index / 2);
 
             if(parent == null) break;
 
-            if((desc && parent.getKey() < treeNode.getKey()) || (!desc && parent.getKey() > treeNode.getKey())) {
+            if((desc && parent.getKey() < node.getKey()) || (!desc && parent.getKey() > node.getKey())) {
                 arrayList.set(index, parent);
-                arrayList.set(index / 2, treeNode);
+                arrayList.set(index / 2, node);
+                index = index / 2;
             }
             else break;
         }
@@ -36,21 +39,21 @@ public class ArrayHeap<T> extends Heap<T> {
     protected void replaceRootNode() {
         if(arrayList.size() < 2) return;
 
-        TreeNode<T> data = arrayList.get(arrayList.size() - 1);
-        arrayList.remove(arrayList.size() - 1);
-        if(arrayList.size() > 1) {
-            arrayList.set(1, data);
-            rootTreeNode = data;
-        }
-        else rootTreeNode = null;
+        TreeNode<T> rootNode = getRootTreeNode();
+        TreeNode<T> lastNode = arrayList.remove(arrayList.size() - 1);
+
+        if(rootNode != lastNode) arrayList.set(1, lastNode);
     }
 
     @Override
-    protected void swapUntilOkRemove(TreeNode<T> treeNode) {
-        int index;
+    protected void swapUntilOkRemove() {
+        TreeNode<T> treeNode = getRootTreeNode();
 
-        while (true) {
-            index = arrayList.indexOf(treeNode);
+        if(treeNode == null) return;
+
+        int index = 1;
+
+        while(true) {
             int leftIndex = index * 2;
             int rightIndex = index * 2 + 1;
 
@@ -68,24 +71,38 @@ public class ArrayHeap<T> extends Heap<T> {
                 if(rightData != null && treeNode.getKey() < rightData.getKey()) rightData = null;
             }
 
-            if(leftData == null && rightData != null) swap(treeNode, rightData);
-            else if(rightData == null && leftData != null) swap(treeNode, leftData);
-            else if(leftData != null && rightData != null) swap(treeNode, (!desc && leftData.getKey() < rightData.getKey()) || (desc && leftData.getKey() > rightData.getKey()) ? leftData : rightData);
+            if(leftData == null && rightData != null) {
+                swap(index, rightIndex);
+                index = rightIndex;
+            }
+            else if(rightData == null && leftData != null) {
+                swap(index, leftIndex);
+                index = leftIndex;
+            }
+            else if(leftData != null && rightData != null) {
+                int swapIndex = (!desc && leftData.getKey() < rightData.getKey()) || (desc && leftData.getKey() > rightData.getKey()) ? leftIndex : rightIndex;
+                swap(index, swapIndex);
+                index = swapIndex;
+            }
             else break;
         }
     }
 
     @Override
-    protected TreeNode<T> getParent(TreeNode<T> treeNode) {
-        return arrayList.get(arrayList.indexOf(treeNode) / 2);
+    protected TreeNode<T> getParent(TreeNode<T> node) {
+        throw new NotSupportedException();
     }
 
-    private void swap(TreeNode<T> data1, TreeNode<T> data2) {
-        int index1 = arrayList.indexOf(data1);
-        int index2 = arrayList.indexOf(data2);
+    public TreeNode<T> getRootTreeNode() {
+        return arrayList.size() >= 2 ? arrayList.get(1) : null;
+    }
 
-        arrayList.set(index1, data2);
-        arrayList.set(index2, data1);
+    private void swap(int index1, int index2) {
+        TreeNode<T> node1 = arrayList.get(index1);
+        TreeNode<T> node2 = arrayList.get(index2);
+
+        arrayList.set(index1, node2);
+        arrayList.set(index2, node1);
     }
 
     public String toStringArray() {

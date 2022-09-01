@@ -42,17 +42,17 @@ public class HeapPerformanceTest {
             int data = samples.get(i);
 
             if (i == 0) {
-                treeHeap = new TreeHeap<>(new TreeNode(data, data), false);
+                //treeHeap = new TreeHeap<>(new TreeNode(data, data), false);
                 arrayHeap = new ArrayHeap<>(new TreeNode(data, data), false);
             }
             else {
-                treeHeap.insertNode(new TreeNode(data, data));
+                //treeHeap.insertNode(new TreeNode(data, data));
                 arrayHeap.insertNode(new TreeNode(data, data));
             }
         }
     }
 
-    @Test
+    /*@Test
     @PerfTest(invocations = 1)
     @Required(median = 1000000)
     public void TreeHeap_데이터_삽입() {
@@ -63,6 +63,15 @@ public class HeapPerformanceTest {
             else treeHeap.insertNode(new TreeNode(data, data));
         }
     }
+
+    @Test
+    @PerfTest(invocations = 1)
+    @Required(median = 20000)
+    public void TreeHeap_데이터_엑세스() {
+        for(int i = 0; i < count; i++) {
+            treeHeap.removeRootNode();
+        }
+    }*/
 
     @Test
     @PerfTest(invocations = 1)
@@ -78,15 +87,6 @@ public class HeapPerformanceTest {
 
     @Test
     @PerfTest(invocations = 1)
-    @Required(median = 20000)
-    public void TreeHeap_데이터_엑세스() {
-        for(int i = 0; i < count; i++) {
-            treeHeap.removeRootNode();
-        }
-    }
-
-    @Test
-    @PerfTest(invocations = 1)
     @Required(median = 8000)
     public void ArrayHeap_데이터_엑세스() {
         for(int i = 0; i < count; i++) {
@@ -94,7 +94,7 @@ public class HeapPerformanceTest {
         }
     }
 
-    @Test
+    /*@Test
     public void Heap_데이터_삭제시_정렬() {
         int max = -1;
 
@@ -110,5 +110,5 @@ public class HeapPerformanceTest {
         }
 
         System.out.println("성공");
-    }
+    }*/
 }

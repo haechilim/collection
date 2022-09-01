@@ -43,31 +43,31 @@ public class TreeHeap<T> extends Heap<T> {
 
     @Override
     public void replaceRootNode() {
-        rootTreeNode = lastNode;
+        rootNode = lastNode;
     }
 
     @Override
-    protected void swapUntilOkRemove(TreeNode<T> treeNode) {
-        while (true) {
-            TreeNode<T> leftTreeNode = treeNode.getLeft();
-            TreeNode<T> rightTreeNode = treeNode.getRight();
+    protected void swapUntilOkRemove() {
+        /*while (true) {
+            TreeNode<T> leftTreeNode = node.getLeft();
+            TreeNode<T> rightTreeNode = node.getRight();
 
             if(leftTreeNode == null && rightTreeNode == null) break;
 
             if(desc) {
-                if(leftTreeNode != null && treeNode.getKey() > leftTreeNode.getKey()) leftTreeNode = null;
-                if(rightTreeNode != null && treeNode.getKey() > rightTreeNode.getKey()) rightTreeNode = null;
+                if(leftTreeNode != null && node.getKey() > leftTreeNode.getKey()) leftTreeNode = null;
+                if(rightTreeNode != null && node.getKey() > rightTreeNode.getKey()) rightTreeNode = null;
             }
             else {
-                if(leftTreeNode != null && treeNode.getKey() < leftTreeNode.getKey()) leftTreeNode = null;
-                if(rightTreeNode != null && treeNode.getKey() < rightTreeNode.getKey()) rightTreeNode = null;
+                if(leftTreeNode != null && node.getKey() < leftTreeNode.getKey()) leftTreeNode = null;
+                if(rightTreeNode != null && node.getKey() < rightTreeNode.getKey()) rightTreeNode = null;
             }
 
-            if(leftTreeNode == null && rightTreeNode != null) swap(treeNode, rightTreeNode);
-            else if(rightTreeNode == null && leftTreeNode != null) swap(treeNode, leftTreeNode);
-            else if(leftTreeNode != null && rightTreeNode != null) swap(treeNode, (!desc && leftTreeNode.getKey() < rightTreeNode.getKey()) || (desc && leftTreeNode.getKey() > rightTreeNode.getKey()) ? leftTreeNode : rightTreeNode);
+            if(leftTreeNode == null && rightTreeNode != null) swap(node, rightTreeNode);
+            else if(rightTreeNode == null && leftTreeNode != null) swap(node, leftTreeNode);
+            else if(leftTreeNode != null && rightTreeNode != null) swap(node, (!desc && leftTreeNode.getKey() < rightTreeNode.getKey()) || (desc && leftTreeNode.getKey() > rightTreeNode.getKey()) ? leftTreeNode : rightTreeNode);
             else break;
-        }
+        }*/
     }
 
     @Override
@@ -80,7 +80,7 @@ public class TreeHeap<T> extends Heap<T> {
         TreeNode<T> rightTreeNode = treeNode.getRight();
         TreeNode<T> grandParent = parent.getParent();
 
-        if(grandParent == null) rootTreeNode = treeNode;
+        if(grandParent == null) rootNode = treeNode;
         else if(grandParent.getRight() == parent) grandParent.setRight(treeNode);
         else if(grandParent.getLeft() == parent) grandParent.setLeft(treeNode);
 

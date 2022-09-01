@@ -9,7 +9,7 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
     }
 
     public boolean insertNode(TreeNode treeNode) throws DuplicatedTreeKeyException {
-        TreeNode<T> current = getRootTreeNode();
+        TreeNode<T> current = getRootNode();
 
         while (true) {
             TreeNode<T> leftTreeNode = current.getLeft();
@@ -59,7 +59,6 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         TreeNode<T> updatedNode = null;
 
         if(leftNode != null && rightNode != null) {
-
             TreeNode<T> smallestNode = findSmallestNode(rightNode);
             updatedNode = smallestNode;
 
@@ -91,14 +90,14 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
                 if(isLeftChild(targetNode)) parentNode.setLeft(null);
                 else parentNode.setRight(null);
             }
-            else rootTreeNode = null;
+            else rootNode = null;
         }
 
         return updatedNode;
     }
 
     public TreeNode searchNode(int key) throws NotExistElementException {
-        TreeNode<T> current = getRootTreeNode();
+        TreeNode<T> current = getRootNode();
 
         while (true) {
             if(key < current.getKey()) current = current.getLeft();
@@ -117,8 +116,8 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         return super.getRightNode(parent);
     }
 
-    public TreeNode<T> getRootTreeNode() {
-        return super.getRootTreeNode();
+    public TreeNode<T> getRootNode() {
+        return super.getRootNode();
     }
 
     @Override
