@@ -3,7 +3,7 @@ package io.haechi.collection.list;
 import io.haechi.collection.exception.IndexOutOfBoundException;
 import io.haechi.collection.exception.NotExistElementException;
 
-public class LinkedList<E> extends List<E> {
+public class LinkedList<E> implements List<E> {
     private Node<E> head;
     private Node<E> tail;
     private int size = 0;
@@ -24,16 +24,19 @@ public class LinkedList<E> extends List<E> {
 
     @Override
     public void add(int index, E element) throws IndexOutOfBoundException {
-        if(index < 0 || index >= size) throw new IndexOutOfBoundException();
-        if(isEmpty()) add(element);
-        else {
-            Node<E> next = search(index);
-            Node<E> previous = next.previous;
-
-            insert(new Node<E>(element), previous, next);
-
-            size++;
+        if(isEmpty()) {
+            add(element);
+            return;
         }
+
+        if(index < 0 || index >= size) throw new IndexOutOfBoundException();
+
+        Node<E> next = search(index);
+        Node<E> previous = next.previous;
+
+        insert(new Node<E>(element), previous, next);
+
+        size++;
     }
 
     private void insert(Node<E> element, Node<E> previous, Node<E> next) {
@@ -160,7 +163,6 @@ public class LinkedList<E> extends List<E> {
         if(index < 0 || index >= size) throw new IndexOutOfBoundException();
 
         boolean reverse = index > size / 2;
-
         Node<E> current = reverse ? tail : head;
 
         if(!reverse) {

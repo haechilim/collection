@@ -4,10 +4,10 @@ import io.haechi.collection.exception.IndexOutOfBoundException;
 
 import java.util.Arrays;
 
-public class ArrayList<E> extends List<E> {
+public class ArrayList<E> implements List<E> {
     private Object[] data;
     private int current = 0;
-    private int initialSize = 1024;
+    private int initialSize = 10;
     private int increment = 2;
 
     public ArrayList() {
@@ -58,9 +58,7 @@ public class ArrayList<E> extends List<E> {
 
         E result = (E) data[index];
 
-        for(int i = index; i < current; i++ ) {
-            data[i] = i + 1 < current ? data[i + 1] : null;
-        }
+        System.arraycopy(data, index + 1, data, index, current - (index + 1));
 
         current--;
 

@@ -2,16 +2,19 @@ package io.haechi.collection.performance;
 
 import io.haechi.collection.list.ArrayList;
 import io.haechi.collection.list.LinkedList;
+import io.haechi.collection.list.List;
 import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.Required;
 import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.util.Random;
 
 public class ListPerformanceTest1 {
-    private static final int INVOCATION_COUNT = 1000;
-    private static final int ELEMENT_COUNT = 5000000;
+    private static final int INVOCATION_COUNT = 100;
+    private static final int ELEMENT_COUNT = 1000000;
     private Random random = new Random();
 
     @Rule
@@ -27,9 +30,8 @@ public class ListPerformanceTest1 {
 
     @Test
     @PerfTest(invocations = INVOCATION_COUNT)
-    @Required(median = 0)
-    public void 배열리스트_삽입_초기값_1024_증분_2() {
-        ArrayList<Integer> list = new ArrayList<>(1024, 2);
+    public void 배열리스트_삽입_초기값_10() {
+        List<Integer> list = new ArrayList<>(10);
 
         for (int i = 0; i < ELEMENT_COUNT; i++) {
             list.add(i);
@@ -38,9 +40,8 @@ public class ListPerformanceTest1 {
 
     @Test
     @PerfTest(invocations = INVOCATION_COUNT)
-    @Required(median = 16)
-    public void 배열리스트_삽입_초기값_1024_증분_200() {
-        ArrayList<Integer> list = new ArrayList<>(1024, 200);
+    public void 배열리스트_삽입_초기값_100() {
+        List<Integer> list = new ArrayList<>(100);
 
         for (int i = 0; i < ELEMENT_COUNT; i++) {
             list.add(i);
@@ -49,9 +50,8 @@ public class ListPerformanceTest1 {
 
     @Test
     @PerfTest(invocations = INVOCATION_COUNT)
-    @Required(median = 0)
-    public void 배열리스트_삽입_초기값_8192_증분_2() {
-        ArrayList<Integer> list = new ArrayList<>(8192, 2);
+    public void 배열리스트_삽입_초기값_1000() {
+        List<Integer> list = new ArrayList<>(1000);
 
         for (int i = 0; i < ELEMENT_COUNT; i++) {
             list.add(i);
@@ -60,25 +60,36 @@ public class ListPerformanceTest1 {
 
     @Test
     @PerfTest(invocations = INVOCATION_COUNT)
-    @Required(median = 16)
-    public void 배열리스트_삽입_초기값_8192_증분_20() {
-        ArrayList<Integer> list = new ArrayList<>(8192, 20);
+    public void 연결리스트_맨앞에_삽입() {
+        List<Integer> list = new LinkedList<>();
 
-        for (int i = 0; i < ELEMENT_COUNT; i++) {
-            list.add(i);
+        list.add(0);
+
+        for (int i = 1; i <= ELEMENT_COUNT; i++) {
+            list.add(0, i);
         }
     }
 
     @Test
-    @Ignore
-    @PerfTest(invocations = 1)
-    @Required(median = 1700)
+    @PerfTest(invocations = INVOCATION_COUNT)
+    public void 연결리스트_맨뒤에_삽입() {
+        List<Integer> list = new LinkedList<>();
+
+        list.add(0);
+
+        for (int i = 1; i <= ELEMENT_COUNT; i++) {
+            list.add(list.size() - 1, i);
+        }
+    }
+
+    @Test
+    @PerfTest(invocations = INVOCATION_COUNT)
     public void 배열리스트_삽입_랜덤_위치() {
-        ArrayList<Integer> list = new ArrayList<>(1024, 20);
+        List<Integer> list = new ArrayList<>();
 
-        list.add(50001);
+        list.add(0);
 
-        for (int i = 0; i < 50000; i++) {
+        for (int i = 1; i <= 20000; i++) {
             int index = random.nextInt(list.size());
 
             list.add(index, i);
@@ -86,15 +97,13 @@ public class ListPerformanceTest1 {
     }
 
     @Test
-    @Ignore
-    @PerfTest(invocations = 1)
-    @Required(median = 3000)
+    @PerfTest(invocations = INVOCATION_COUNT)
     public void 연결리스트_삽입_랜덤_위치() {
-        LinkedList<Integer> list = new LinkedList<>();
+        List<Integer> list = new LinkedList<>();
 
-        list.add(50001);
+        list.add(0);
 
-        for (int i = 0; i < 50000; i++) {
+        for (int i = 1; i <= 20000; i++) {
             int index = random.nextInt(list.size());
 
             list.add(index, i);

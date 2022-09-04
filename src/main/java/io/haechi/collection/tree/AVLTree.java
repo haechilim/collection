@@ -19,12 +19,10 @@ public class AVLTree<T> extends BinarySearchTree<T> {
     }
 
     @Override
-    public boolean removeNode(int key) {
-        TreeNode node = removeNodeByKey(key);
-        calculateBalanceFactor(node);
-        balanceTree(node);
-
-        return true;
+    public void removeNode(int key) {
+        TreeNode movedNode = removeNodeByKey(key);
+        calculateBalanceFactor(movedNode);
+        balanceTree(movedNode);
     }
 
     private void calculateBalanceFactor(TreeNode node) {

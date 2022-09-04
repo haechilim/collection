@@ -47,8 +47,8 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         return current;
     }
 
-    public boolean removeNode(int key) {
-        return removeNodeByKey(key) != null;
+    public void removeNode(int key) {
+        removeNodeByKey(key);
     }
 
     protected TreeNode<T> removeNodeByKey(int key) {
@@ -56,15 +56,15 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
         TreeNode<T> parentNode = targetNode.getParent();
         TreeNode<T> leftNode = targetNode.getLeft();
         TreeNode<T> rightNode = targetNode.getRight();
-        TreeNode<T> updatedNode = null;
+        TreeNode<T> movedNode = null;
 
         if(leftNode != null && rightNode != null) {
             TreeNode<T> smallestNode = findSmallestNode(rightNode);
-            updatedNode = smallestNode;
+            movedNode = smallestNode;
 
             if(smallestNode.getRight() != null && isLeftChild(smallestNode)) {
                 setLeftNode(smallestNode.getParent(), smallestNode.getRight());
-                updatedNode = smallestNode.getRight();
+                movedNode = smallestNode.getRight();
             }
 
             if(parentNode == null) setRootNode(smallestNode);
@@ -93,7 +93,7 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
             else rootNode = null;
         }
 
-        return updatedNode;
+        return movedNode;
     }
 
     public TreeNode searchNode(int key) throws NotExistElementException {
@@ -121,22 +121,22 @@ public class BinarySearchTree<T> extends BinaryTree<T> {
     }
 
     @Override
-    public void traversePreorder(VisitCallback callback) {
+    public void traversePreorder(TraverseCallback callback) {
         super.traversePreorder(callback);
     }
 
     @Override
-    public void traverseInorder(VisitCallback callback) {
+    public void traverseInorder(TraverseCallback callback) {
         super.traverseInorder(callback);
     }
 
     @Override
-    public void traversePostorder(VisitCallback callback) {
+    public void traversePostorder(TraverseCallback callback) {
         super.traversePostorder(callback);
     }
 
     @Override
-    public void traverseLevel(VisitCallback callback) {
+    public void traverseLevel(TraverseCallback callback) {
         super.traverseLevel(callback);
     }
 }
