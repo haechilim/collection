@@ -18,7 +18,8 @@ public class HeapPerformanceTest {
     private ArrayList<Integer> samples;
     private Heap<Integer> treeHeap;
     private Heap<Integer> arrayHeap;
-    private int count = 1000000;
+    private static final int INVOCATION_COUNT = 100;
+    private static final int ELEMENT_COUNT = 1000000;
 
     @Rule
     public ContiPerfRule contiPerfRule = new ContiPerfRule();
@@ -34,13 +35,13 @@ public class HeapPerformanceTest {
     public HeapPerformanceTest() {
         samples = new ArrayList<>();
 
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < ELEMENT_COUNT; i++) {
             samples.add(i);
         }
 
         Collections.shuffle(samples);
 
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < ELEMENT_COUNT; i++) {
             int data = samples.get(i);
 
             if (i == 0) {
@@ -76,10 +77,9 @@ public class HeapPerformanceTest {
     }*/
 
     @Test
-    @PerfTest(invocations = 1)
-    @Required(median = 100000)
-    public void ArrayHeap_데이터_삽입() {
-        for(int i = 0; i < count; i++) {
+    @PerfTest(invocations = INVOCATION_COUNT)
+    public void 배열힙_데이터_삽입() {
+        for(int i = 0; i < ELEMENT_COUNT; i++) {
             int data = samples.get(i);
 
             if (i == 0) arrayHeap = new ArrayHeap<>(new TreeNode(data, data), false);
@@ -88,10 +88,9 @@ public class HeapPerformanceTest {
     }
 
     @Test
-    @PerfTest(invocations = 1)
-    @Required(median = 8000)
-    public void ArrayHeap_데이터_엑세스() {
-        for(int i = 0; i < count; i++) {
+    @PerfTest(invocations = INVOCATION_COUNT)
+    public void 배열힙_데이터_엑세스() {
+        for(int i = 0; i < ELEMENT_COUNT; i++) {
             arrayHeap.removeRootNode();
         }
     }
